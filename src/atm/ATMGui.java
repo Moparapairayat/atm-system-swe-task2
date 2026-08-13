@@ -357,11 +357,12 @@ public class ATMGui {
     private void authenticate(String cardNumber, String pin) {
         for (Customer c : customers) if (c.getCard().getCardNumber().equals(cardNumber)) {
             if (atm.insertCard(c.getCard(), pin)) {
+                SoundEffects.accepted();
                 activeCustomer = c; activeAccount = c.getAccounts().get(0); pinAttempts = 0;
                 customerLabel.setText("CARD ACTIVE"); cardPort.setStatus("CARD ACTIVE"); showPage("menu"); return;
             }
             pinAttempts++;
-            dialog(pinAttempts >= 3 ? "Card retained after 3 incorrect PIN attempts." : "Incorrect PIN. Attempts remaining: " + (3 - pinAttempts));
+            SoundEffects.warning(); dialog(pinAttempts >= 3 ? "Card retained after 3 incorrect PIN attempts." : "Incorrect PIN. Attempts remaining: " + (3 - pinAttempts));
             if (pinAttempts >= 3) showPage("welcome");
             return;
         }
@@ -372,10 +373,11 @@ public class ATMGui {
         if (pendingCustomer == null) { dialog("No card is currently detected."); showPage("welcome"); return; }
         Customer c = pendingCustomer;
         if (atm.insertCard(c.getCard(), pin)) {
+            SoundEffects.accepted();
             activeCustomer = c; activeAccount = c.getAccounts().get(0); pinAttempts = 0;
             customerLabel.setText("CARD ACTIVE"); cardPort.setStatus("CARD ACTIVE"); showPage("menu"); return;
         }
-        pinAttempts++;
+        pinAttempts++; SoundEffects.warning();
         dialog(pinAttempts >= 3 ? "Card retained after 3 incorrect PIN attempts." : "Incorrect PIN. Attempts remaining: " + (3 - pinAttempts));
         if (pinAttempts >= 3) { pendingCustomer = null; cardPort.removeItem(); cardPort.setStatus("READY"); showPage("welcome"); }
     }
@@ -390,9 +392,9 @@ public class ATMGui {
             bank.processTransaction(t);
             if (type.equals("withdraw")) {
                 pendingAmount = amount;
-                showProcessing("COUNTING NOTES", "Please wait while your cash is prepared…", () -> cashPort.dispense(amount, () -> {
+                showProcessing("COUNTING NOTES", "Please wait while your cash is prepared…", () -> { SoundEffects.cashDispenser(); cashPort.dispense(amount, () -> {
                     collectionHeading.setText("PLEASE COLLECT YOUR CASH"); showPage("collection");
-                }));
+                }); });
             } else {
                 showProcessing("OPENING DEPOSIT SLOT", "Place your cash in the illuminated deposit slot…", () ->
                         cashPort.acceptDeposit(amount, () -> showProcessing("COUNTING AND VALIDATING NOTES",
@@ -414,18 +416,41 @@ public class ATMGui {
     }
 
     private void showBalance() { balanceValue.setText(money.format(activeAccount.checkBalance())); showPage("balance"); }
-    private void miniStatement() { dialog("Account: " + activeAccount.getAccountNumber() + "\nTransactions recorded: " + activeAccount.getHistory().size() + "\nCurrent balance: " + money.format(activeAccount.checkBalance())); }
+    private void miniStatement() {
+        StringBuilder statement = new StringBuilder();
+        statement.append("      BITHM NATIONAL BANK\n");
+        statement.append("        MINI STATEMENT\n");
+        statement.append("----------------------------------\n");
+        statement.append("Account : ").append(activeAccount.getAccountNumber()).append("\n");
+        statement.append("Card    : •••• 4444\n");
+        statement.append("----------------------------------\n");
+        if (activeAccount.getHistory().isEmpty()) {
+            statement.append("No recent transactions\n");
+        } else {
+            int start = Math.max(0, activeAccount.getHistory().size() - 5);
+            for (int i = activeAccount.getHistory().size() - 1; i >= start; i--) {
+                Transaction t = activeAccount.getHistory().get(i);
+                String type = t.getClass().getSimpleName().replace("Inquiry", " Inquiry").toUpperCase();
+                statement.append(String.format("%-19s %9.2f\n", type, t.getAmount()));
+            }
+        }
+        statement.append("----------------------------------\n");
+        statement.append(String.format("AVAILABLE BALANCE  %10.2f\n", activeAccount.checkBalance()));
+        statement.append("Thank you for banking with us.");
+        statementContent.setText(statement.toString());
+        showPage("statement");
+    }
     private void serviceMessage(String service) { dialog(service + " request logged.\nATM-001 is ready for service."); }
     private void ejectCard() { startEjection(); }
     private void confirmation(String heading, double amount) { dialog(heading + "\n\nAmount: " + money.format(amount) + "\nAvailable balance: " + money.format(activeAccount.checkBalance()) + "\n\nThank you for banking with us."); showPage("menu"); }
     private void offerReceipt() { showPage("receiptChoice"); }
     private void printReceipt() {
-        showProcessing("PRINTING RECEIPT", "Your transaction details are being printed…", () -> receiptPort.dispense(() -> {
+        showProcessing("PRINTING RECEIPT", "Your transaction details are being printed…", () -> { SoundEffects.receiptPrinter(); receiptPort.dispense(() -> {
             receiptHeading.setText("PLEASE TAKE YOUR RECEIPT"); showPage("receiptCollection");
-        }));
+        }); });
     }
     private void startEjection() {
-        showProcessing("ENDING SESSION", "Your card is being returned…", () -> cardPort.eject(() -> showPage("cardCollection")));
+        showProcessing("ENDING SESSION", "Your card is being returned…", () -> { SoundEffects.cardEject(); cardPort.eject(() -> showPage("cardCollection")); });
     }
     private void finishSession() {
         cardPort.removeItem(); activeCustomer = null; activeAccount = null; customerLabel.setText("READY"); cardPort.setStatus("READY"); showPage("welcome");
@@ -435,7 +460,7 @@ public class ATMGui {
         Timer wait = new Timer(1150, e -> next.run()); wait.setRepeats(false); wait.start();
     }
     private void beginCardInsertion() {
-        customerLabel.setText("CARD DETECTED"); cardPort.setStatus("CARD DETECTED");
+        customerLabel.setText("CARD DETECTED"); cardPort.setStatus("CARD DETECTED"); SoundEffects.cardReader();
         pendingCustomer = customers[0];
         Timer detect = new Timer(400, e -> cardPort.insert(() ->
                 showProcessing("READING CARD", "Please wait while your card is verified…", () -> showPage("login"))));
@@ -471,6 +496,7 @@ public class ATMGui {
     private JLabel label(String text, int size, Color color, int alignment) { JLabel l = new JLabel("<html>" + text.replace("\n", "<br>") + "</html>", alignment); l.setFont(new Font("Segoe UI", Font.BOLD, size)); l.setForeground(color); l.setAlignmentX(Component.CENTER_ALIGNMENT); return l; }
     private void handleKey(String value) {
         if (activePinField == null || !activePinField.isShowing()) return;
+        SoundEffects.keypad();
         String current = new String(activePinField.getPassword());
         if (value.equals("C")) {
             activePinField.setText("");
