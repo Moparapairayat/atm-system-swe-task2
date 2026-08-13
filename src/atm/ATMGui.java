@@ -24,6 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -54,6 +55,8 @@ public class ATMGui {
     private final JLabel processingDetail = new JLabel("", SwingConstants.CENTER);
     private final JLabel receiptHeading = new JLabel("", SwingConstants.CENTER);
     private final JLabel balanceValue = new JLabel("", SwingConstants.CENTER);
+    private final JTextArea statementContent = new JTextArea();
+    private JPasswordField activePinField;
     private double pendingAmount;
     private Customer activeCustomer;
     private Customer pendingCustomer;
@@ -73,21 +76,21 @@ public class ATMGui {
 
     private void buildWindow() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(1000, 690));
-        frame.setSize(1180, 770);
+        frame.setMinimumSize(new Dimension(1000, 850));
+        frame.setSize(1180, 900);
         frame.setLocationRelativeTo(null);
         JPanel background = new JPanel(new GridLayout(1, 1));
         background.setBackground(new Color(18, 27, 37));
-        background.setBorder(new EmptyBorder(25, 55, 25, 55));
+        background.setBorder(new EmptyBorder(15, 45, 15, 45));
         background.add(machine());
         frame.setContentPane(background);
     }
 
     private JPanel machine() {
-        JPanel machine = new JPanel(new BorderLayout(16, 14));
+        JPanel machine = new JPanel(new BorderLayout(16, 10));
         machine.setBackground(new Color(48, 57, 64));
         machine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(143, 157, 164), 3), new EmptyBorder(12, 25, 20, 25)));
+                BorderFactory.createLineBorder(new Color(143, 157, 164), 3), new EmptyBorder(10, 25, 12, 25)));
         machine.add(fascia(), BorderLayout.NORTH);
         machine.add(leftPanel(), BorderLayout.WEST);
         screen.setBackground(SCREEN);
@@ -108,7 +111,7 @@ public class ATMGui {
     }
 
     private JPanel bottomBay() {
-        JPanel p = new JPanel(new BorderLayout(20, 0)); p.setBackground(new Color(38, 45, 50)); p.setBorder(new EmptyBorder(9, 175, 0, 175));
+        JPanel p = new JPanel(new BorderLayout(20, 0)); p.setBackground(new Color(38, 45, 50)); p.setBorder(new EmptyBorder(6, 175, 0, 175));
         JPanel cash = hardwareBay("CASH DISPENSER", new Color(45, 174, 135), cashPort, 280);
         JPanel receipt = hardwareBay("RECEIPT PRINTER", new Color(231, 201, 101), receiptPort, 120);
         p.add(cash, BorderLayout.CENTER); p.add(receipt, BorderLayout.EAST); return p;
@@ -117,7 +120,7 @@ public class ATMGui {
     private JPanel hardwareBay(String name, Color light, PortAnimation port, int width) {
         JPanel p = column(); p.setBackground(new Color(24, 29, 33)); p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(105, 118, 123)), new EmptyBorder(5, 12, 7, 12)));
         p.add(label(name + "   ●", 9, light, SwingConstants.CENTER));
-        int portHeight = name.startsWith("CASH") ? 126 : 76;
+        int portHeight = name.startsWith("CASH") ? 110 : 120;
         port.setPreferredSize(new Dimension(width, portHeight)); port.setMaximumSize(new Dimension(width, portHeight)); port.setAlignmentX(Component.CENTER_ALIGNMENT); p.add(port); return p;
     }
 
@@ -179,6 +182,7 @@ public class ATMGui {
         screen.add(receiptCollectionPage(), "receiptCollection");
         screen.add(cardCollectionPage(), "cardCollection");
         screen.add(balancePage(), "balance");
+        screen.add(statementPage(), "statement");
         screen.add(messagePage(), "message");
         pages.show(screen, "welcome");
     }
@@ -209,6 +213,7 @@ public class ATMGui {
         cardPanel.add(Box.createVerticalStrut(20));
         cardPanel.add(label("Enter your 4-digit PIN", 13, INK, SwingConstants.CENTER)); cardPanel.add(Box.createVerticalStrut(7));
         JPasswordField pin = (JPasswordField) field("PIN", true);
+        activePinField = pin;
         cardPanel.add(pin); cardPanel.add(Box.createVerticalStrut(9));
         cardPanel.add(label("🔒  Shield your PIN while entering it", 11, new Color(88, 112, 125), SwingConstants.CENTER));
         p.add(cardPanel); p.add(Box.createVerticalStrut(18));
@@ -245,7 +250,7 @@ public class ATMGui {
         for (int value : new int[]{500, 1000, 2000, 5000}) values.add(action(money.format(value), BLUE, e -> transact(type, value)));
         p.add(values); p.add(Box.createVerticalStrut(14));
         JTextField other = field("Other amount", false); p.add(other); p.add(Box.createVerticalStrut(10));
-        p.add(action("CONFIRM AMOUNT", TEAL, e -> {
+        p.add(action(withdrawal ? "CONFIRM AMOUNT" : "OPEN DEPOSIT SLOT", TEAL, e -> {
             try { transact(type, Double.parseDouble(other.getText().trim())); }
             catch (NumberFormatException ex) { dialog("Enter a valid numeric amount."); }
         }));
@@ -337,6 +342,16 @@ public class ATMGui {
         p.add(card); p.add(Box.createVerticalStrut(22)); p.add(action("BACK TO MENU", BLUE, e -> showPage("menu"))); p.add(Box.createVerticalGlue()); addSecureFooter(p); return p;
     }
 
+    private JPanel statementPage() {
+        JPanel p = centered(); addAtmHeader(p, "MINI STATEMENT", "Your recent account activity."); p.add(Box.createVerticalStrut(16));
+        JPanel paper = new JPanel(new BorderLayout()); paper.setBackground(Color.WHITE); paper.setMaximumSize(new Dimension(500, 285)); paper.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(189, 207, 215)), new EmptyBorder(14, 20, 14, 20)));
+        statementContent.setEditable(false); statementContent.setBackground(Color.WHITE); statementContent.setForeground(INK); statementContent.setFont(new Font("Monospaced", Font.PLAIN, 12)); statementContent.setLineWrap(false); statementContent.setBorder(null);
+        paper.add(statementContent, BorderLayout.CENTER); p.add(paper); p.add(Box.createVerticalStrut(16));
+        JPanel actions = new JPanel(new GridLayout(1, 2, 10, 0)); actions.setOpaque(false); actions.setMaximumSize(new Dimension(410, 45));
+        actions.add(action("PRINT STATEMENT", TEAL, e -> receiptPort.dispense(() -> dialog("Mini statement printed. Please take it from the receipt printer."))));
+        actions.add(action("BACK TO MENU", BLUE, e -> showPage("menu"))); p.add(actions); p.add(Box.createVerticalGlue()); addSecureFooter(p); return p;
+    }
+
     private JPanel messagePage() { return centered(); }
 
     private void authenticate(String cardNumber, String pin) {
@@ -379,7 +394,9 @@ public class ATMGui {
                     collectionHeading.setText("PLEASE COLLECT YOUR CASH"); showPage("collection");
                 }));
             } else {
-                confirmation("DEPOSIT ACCEPTED", amount);
+                showProcessing("OPENING DEPOSIT SLOT", "Place your cash in the illuminated deposit slot…", () ->
+                        cashPort.acceptDeposit(amount, () -> showProcessing("COUNTING AND VALIDATING NOTES",
+                                "Deposit accepted: " + money.format(amount) + "\nUpdated balance: " + money.format(activeAccount.checkBalance()), this::offerReceipt)));
             }
         }
         else dialog("Transaction could not be completed. Check your available balance.");
@@ -452,7 +469,18 @@ public class ATMGui {
         tile.add(label(title, 9, new Color(70, 91, 105), SwingConstants.CENTER)); tile.add(label("● " + value, 10, color, SwingConstants.CENTER)); return tile;
     }
     private JLabel label(String text, int size, Color color, int alignment) { JLabel l = new JLabel("<html>" + text.replace("\n", "<br>") + "</html>", alignment); l.setFont(new Font("Segoe UI", Font.BOLD, size)); l.setForeground(color); l.setAlignmentX(Component.CENTER_ALIGNMENT); return l; }
-    private void handleKey(String value) { /* Physical-style keypad is included for visual simulation. */ }
+    private void handleKey(String value) {
+        if (activePinField == null || !activePinField.isShowing()) return;
+        String current = new String(activePinField.getPassword());
+        if (value.equals("C")) {
+            activePinField.setText("");
+        } else if (value.equals("ENTER")) {
+            authenticatePending(current);
+        } else if (current.length() < 4) {
+            activePinField.setText(current + value);
+        }
+        activePinField.requestFocusInWindow();
+    }
 
     /** Small painted hardware port used to make card, cash, and receipt actions visible. */
     private static class PortAnimation extends JPanel {
@@ -469,7 +497,7 @@ public class ATMGui {
 
         PortAnimation(String title, Color accent, String kind) {
             this.title = title; this.accent = accent; this.kind = kind;
-            int height = kind.equals("CARD") ? 210 : kind.equals("CASH") ? 126 : 76;
+            int height = kind.equals("CARD") ? 210 : kind.equals("CASH") ? 110 : 120;
             setPreferredSize(new Dimension(132, height)); setMaximumSize(new Dimension(132, height));
             setOpaque(false);
         }
@@ -483,6 +511,13 @@ public class ATMGui {
             else animate(0, 1, done);
         }
         void dispense(Runnable done) { dispense(500, done); }
+        void acceptDeposit(double amount, Runnable done) {
+            displayedAmount = amount;
+            noteCount = Math.max(1, Math.min(5, (int) Math.ceil(amount / 1000.0)));
+            if (kind.equals("CASH")) animateShutter(0, 1, () -> animate(1, 0, () ->
+                    animateShutter(1, 0, () -> { progress = -1; repaint(); done.run(); })));
+            else done.run();
+        }
         void collect(Runnable done) {
             if (kind.equals("CASH")) animate(1, 0, () -> animateShutter(1, 0, () -> { progress = -1; repaint(); done.run(); }));
             else animate(1, 0, () -> { progress = -1; repaint(); done.run(); });
