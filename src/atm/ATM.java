@@ -34,12 +34,17 @@ public class ATM {
 
     /** + dispenseCash(amount: double) : boolean */
     public boolean dispenseCash(double amount) {
-        if (amount > cashBalance) {
+        if (!canDispenseCash(amount)) {
             System.out.println("[ATM] Insufficient cash in machine.");
             return false;
         }
         cashBalance -= amount;
         return true;
+    }
+
+    /** Checks availability before a withdrawal changes either account or ATM cash. */
+    public boolean canDispenseCash(double amount) {
+        return amount > 0 && amount <= cashBalance;
     }
 
     public Bank getBank() {
