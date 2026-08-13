@@ -55,6 +55,7 @@ public class ATMGui {
     private final JLabel processingDetail = new JLabel("", SwingConstants.CENTER);
     private final JLabel receiptHeading = new JLabel("", SwingConstants.CENTER);
     private final JLabel balanceValue = new JLabel("", SwingConstants.CENTER);
+    private final JLabel detectedCardLabel = new JLabel("", SwingConstants.CENTER);
     private final JTextArea statementContent = new JTextArea();
     private JPasswordField activePinField;
     private double pendingAmount;
@@ -171,6 +172,7 @@ public class ATMGui {
     private void addPages() {
         screen.add(welcomePage(), "welcome");
         screen.add(loginPage(), "login");
+        screen.add(cardSelectionPage(), "cardSelection");
         screen.add(menuPage(), "menu");
         screen.add(amountPage("withdraw"), "withdraw");
         screen.add(amountPage("deposit"), "deposit");
@@ -194,7 +196,7 @@ public class ATMGui {
         p.add(Box.createVerticalStrut(26));
         p.add(label("Please insert your card to begin", 18, INK, SwingConstants.CENTER));
         p.add(Box.createVerticalStrut(25));
-        p.add(action("INSERT CARD", BLUE, e -> beginCardInsertion()));
+        p.add(action("INSERT CARD", BLUE, e -> showPage("cardSelection")));
         p.add(Box.createVerticalStrut(12));
         p.add(action("TECHNICIAN ACCESS", new Color(83, 91, 98), e -> showPage("technician")));
         return p;
@@ -209,7 +211,8 @@ public class ATMGui {
         p.add(Box.createVerticalStrut(22));
         JPanel cardPanel = column(); cardPanel.setBackground(Color.WHITE); cardPanel.setMaximumSize(new Dimension(430, 290)); cardPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(189, 207, 215)), new EmptyBorder(22, 38, 20, 38)));
         cardPanel.add(label("ENTER YOUR PIN", 25, INK, SwingConstants.CENTER)); cardPanel.add(Box.createVerticalStrut(8));
-        cardPanel.add(label("Card detected:  ••••  ••••  ••••  4444", 14, new Color(70, 91, 105), SwingConstants.CENTER));
+        detectedCardLabel.setFont(new Font("Segoe UI", Font.BOLD, 14)); detectedCardLabel.setForeground(new Color(70, 91, 105)); detectedCardLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cardPanel.add(detectedCardLabel);
         cardPanel.add(Box.createVerticalStrut(20));
         cardPanel.add(label("Enter your 4-digit PIN", 13, INK, SwingConstants.CENTER)); cardPanel.add(Box.createVerticalStrut(7));
         JPasswordField pin = (JPasswordField) field("PIN", true);
@@ -223,6 +226,13 @@ public class ATMGui {
         p.add(Box.createVerticalGlue());
         p.add(label("🔒  Please do not remove your card until instructed", 11, new Color(88, 112, 125), SwingConstants.CENTER));
         return p;
+    }
+
+    private JPanel cardSelectionPage() {
+        JPanel p = centered(); addAtmHeader(p, "INSERT DEMO CARD", "Choose the customer card to insert into this simulator."); p.add(Box.createVerticalStrut(28));
+        p.add(action("ZIANA MEHNAZ RUHEE  •  •••• 4444", BLUE, e -> beginCardInsertion(customers[0]))); p.add(Box.createVerticalStrut(12));
+        p.add(action("MOPARA PAIR AYAT  •  •••• 8888", TEAL, e -> beginCardInsertion(customers[1]))); p.add(Box.createVerticalStrut(12));
+        p.add(action("BACK", new Color(90, 102, 110), e -> showPage("welcome"))); p.add(Box.createVerticalGlue()); addSecureFooter(p); return p;
     }
 
     private JPanel menuPage() {
@@ -280,7 +290,7 @@ public class ATMGui {
         health.add(statusTile("CASH LEVEL", "READY", TEAL)); health.add(statusTile("NETWORK", "ONLINE", TEAL)); health.add(statusTile("PRINTER", "READY", TEAL)); p.add(health); p.add(Box.createVerticalStrut(12));
         JPanel grid = new JPanel(new GridLayout(2, 2, 12, 12)); grid.setOpaque(false);
         for (String service : new String[]{"REPLENISH CASH", "UPGRADE SYSTEM", "RUN DIAGNOSTIC", "REPAIR ATM"})
-            grid.add(action(service, service.contains("REPAIR") ? new Color(166, 76, 69) : BLUE, e -> serviceMessage(service)));
+            grid.add(action(service, service.contains("REPAIR") ? new Color(166, 76, 69) : BLUE, e -> runService(service)));
         p.add(grid); p.add(Box.createVerticalStrut(16));
         p.add(action("EXIT SERVICE MODE", new Color(90, 102, 110), e -> showPage("welcome")));
         return p;
@@ -386,11 +396,12 @@ public class ATMGui {
         if (amount <= 0) { dialog("Amount must be greater than zero."); return; }
         Transaction t = type.equals("withdraw") ? new Withdrawal(id(), amount, activeAccount) : new Deposit(id(), amount, activeAccount);
         if (!bank.verifyTransaction(t)) { dialog("Transaction rejected by bank."); return; }
-        if (type.equals("withdraw") && !atm.dispenseCash(amount)) { dialog("ATM cannot dispense this amount right now."); return; }
+        if (type.equals("withdraw") && !atm.canDispenseCash(amount)) { dialog("ATM cannot dispense this amount right now."); return; }
         boolean success = t.execute();
         if (success) {
             bank.processTransaction(t);
             if (type.equals("withdraw")) {
+                atm.dispenseCash(amount);
                 pendingAmount = amount;
                 showProcessing("COUNTING NOTES", "Please wait while your cash is prepared…", () -> { SoundEffects.cashDispenser(); cashPort.dispense(amount, () -> {
                     collectionHeading.setText("PLEASE COLLECT YOUR CASH"); showPage("collection");
@@ -422,7 +433,7 @@ public class ATMGui {
         statement.append("        MINI STATEMENT\n");
         statement.append("----------------------------------\n");
         statement.append("Account : ").append(activeAccount.getAccountNumber()).append("\n");
-        statement.append("Card    : •••• 4444\n");
+        statement.append("Card    : ").append(maskedCard(activeCustomer.getCard().getCardNumber())).append("\n");
         statement.append("----------------------------------\n");
         if (activeAccount.getHistory().isEmpty()) {
             statement.append("No recent transactions\n");
@@ -440,7 +451,17 @@ public class ATMGui {
         statementContent.setText(statement.toString());
         showPage("statement");
     }
-    private void serviceMessage(String service) { dialog(service + " request logged.\nATM-001 is ready for service."); }
+    private void runService(String service) {
+        boolean completed;
+        switch (service) {
+            case "REPLENISH CASH": completed = technician.performMaintenance(new Replenishment("SA-" + System.nanoTime(), "cash", 100)); break;
+            case "UPGRADE SYSTEM": completed = technician.performMaintenance(new Upgrade("SA-" + System.nanoTime(), "firmware")); break;
+            case "RUN DIAGNOSTIC": completed = technician.performMaintenance(new Diagnostic("SA-" + System.nanoTime(), "on-site")); break;
+            case "REPAIR ATM": completed = technician.performRepair("Scheduled ATM service inspection"); break;
+            default: completed = false;
+        }
+        dialog(service + (completed ? " completed successfully." : " could not be completed."));
+    }
     private void ejectCard() { startEjection(); }
     private void confirmation(String heading, double amount) { dialog(heading + "\n\nAmount: " + money.format(amount) + "\nAvailable balance: " + money.format(activeAccount.checkBalance()) + "\n\nThank you for banking with us."); showPage("menu"); }
     private void offerReceipt() { showPage("receiptChoice"); }
@@ -453,21 +474,23 @@ public class ATMGui {
         showProcessing("ENDING SESSION", "Your card is being returned…", () -> { SoundEffects.cardEject(); cardPort.eject(() -> showPage("cardCollection")); });
     }
     private void finishSession() {
-        cardPort.removeItem(); activeCustomer = null; activeAccount = null; customerLabel.setText("READY"); cardPort.setStatus("READY"); showPage("welcome");
+        cardPort.removeItem(); activeCustomer = null; pendingCustomer = null; activeAccount = null; customerLabel.setText("READY"); cardPort.setStatus("READY"); showPage("welcome");
     }
     private void showProcessing(String heading, String detail, Runnable next) {
         processingHeading.setText(heading); processingDetail.setText(detail); showPage("processing");
         Timer wait = new Timer(1150, e -> next.run()); wait.setRepeats(false); wait.start();
     }
-    private void beginCardInsertion() {
+    private void beginCardInsertion(Customer customer) {
         customerLabel.setText("CARD DETECTED"); cardPort.setStatus("CARD DETECTED"); SoundEffects.cardReader();
-        pendingCustomer = customers[0];
+        pendingCustomer = customer;
+        detectedCardLabel.setText("Card detected:  " + maskedCard(customer.getCard().getCardNumber()));
         Timer detect = new Timer(400, e -> cardPort.insert(() ->
                 showProcessing("READING CARD", "Please wait while your card is verified…", () -> showPage("login"))));
         detect.setRepeats(false); detect.start();
     }
     private void showPage(String name) { pages.show(screen, name); }
     private String id() { return "TXN-" + System.nanoTime(); }
+    private String maskedCard(String cardNumber) { return "••••  ••••  ••••  " + cardNumber.substring(cardNumber.length() - 4); }
     private void dialog(String text) { JOptionPane.showMessageDialog(frame, text, "BITHM National Bank ATM", JOptionPane.INFORMATION_MESSAGE); }
 
     private JTextField field(String hint, boolean password) {
