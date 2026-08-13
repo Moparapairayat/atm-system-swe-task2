@@ -92,6 +92,18 @@ It is an academic software simulation. No physical bank hardware or live banking
 
 The application is organised around the **Boundary–Control–Entity** model from the supplied UML diagrams.
 
+### Base ATM UML Class Diagram
+
+<p align="center">
+  <img src="./docs/diagrams/base-atm-uml-class-diagram.png" width="100%" alt="Base ATM System UML class diagram showing transaction, bank, customer, card, and account relationships" />
+</p>
+
+### Refined UML Class Diagram
+
+<p align="center">
+  <img src="./docs/diagrams/refined-uml-class-diagram.png" width="100%" alt="Refined ATM System UML class diagram showing transaction and technician maintenance relationships" />
+</p>
+
 | Layer | Implemented classes |
 | :--- | :--- |
 | **Boundary** | `ATM` |
