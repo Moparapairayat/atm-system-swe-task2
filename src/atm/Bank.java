@@ -29,7 +29,7 @@ public class Bank {
 
     /** + processTransaction(t: Transaction) : void */
     public void processTransaction(Transaction t) {
-        System.out.println("[Bank:" + bankName + "] Transaction " + t.getTransactionID()
+        System.out.println("[Bank:" + bankName + " (" + bankCode + ")] Transaction " + t.getTransactionID()
                 + " processed and logged at bank level.");
     }
 

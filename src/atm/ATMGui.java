@@ -8,7 +8,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -31,12 +30,10 @@ import javax.swing.border.EmptyBorder;
 
 /** A visual ATM kiosk interface that reuses the project's existing domain classes. */
 public class ATMGui {
-    private static final Color NAVY = new Color(8, 25, 44);
     private static final Color SCREEN = new Color(232, 243, 246);
     private static final Color BLUE = new Color(20, 103, 166);
     private static final Color TEAL = new Color(0, 143, 136);
     private static final Color INK = new Color(20, 42, 59);
-    private static final Font TITLE = new Font("Segoe UI", Font.BOLD, 27);
     private static final Font BODY = new Font("Segoe UI", Font.PLAIN, 16);
 
     private final ATM atm;
@@ -58,7 +55,6 @@ public class ATMGui {
     private final JLabel detectedCardLabel = new JLabel("", SwingConstants.CENTER);
     private final JTextArea statementContent = new JTextArea();
     private JPasswordField activePinField;
-    private double pendingAmount;
     private Customer activeCustomer;
     private Customer pendingCustomer;
     private Account activeAccount;
@@ -364,21 +360,6 @@ public class ATMGui {
 
     private JPanel messagePage() { return centered(); }
 
-    private void authenticate(String cardNumber, String pin) {
-        for (Customer c : customers) if (c.getCard().getCardNumber().equals(cardNumber)) {
-            if (atm.insertCard(c.getCard(), pin)) {
-                SoundEffects.accepted();
-                activeCustomer = c; activeAccount = c.getAccounts().get(0); pinAttempts = 0;
-                customerLabel.setText("CARD ACTIVE"); cardPort.setStatus("CARD ACTIVE"); showPage("menu"); return;
-            }
-            pinAttempts++;
-            SoundEffects.warning(); dialog(pinAttempts >= 3 ? "Card retained after 3 incorrect PIN attempts." : "Incorrect PIN. Attempts remaining: " + (3 - pinAttempts));
-            if (pinAttempts >= 3) showPage("welcome");
-            return;
-        }
-        dialog("Card not recognised. Please try again.");
-    }
-
     private void authenticatePending(String pin) {
         if (pendingCustomer == null) { dialog("No card is currently detected."); showPage("welcome"); return; }
         Customer c = pendingCustomer;
@@ -402,7 +383,6 @@ public class ATMGui {
             bank.processTransaction(t);
             if (type.equals("withdraw")) {
                 atm.dispenseCash(amount);
-                pendingAmount = amount;
                 showProcessing("COUNTING NOTES", "Please wait while your cash is prepared…", () -> { SoundEffects.cashDispenser(); cashPort.dispense(amount, () -> {
                     collectionHeading.setText("PLEASE COLLECT YOUR CASH"); showPage("collection");
                 }); });
