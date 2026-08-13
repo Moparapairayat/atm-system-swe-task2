@@ -84,29 +84,52 @@ public class ATMGui {
     }
 
     private JPanel machine() {
-        JPanel machine = new JPanel(new BorderLayout(22, 0));
-        machine.setBackground(new Color(55, 64, 72));
+        JPanel machine = new JPanel(new BorderLayout(16, 14));
+        machine.setBackground(new Color(48, 57, 64));
         machine.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(120, 130, 137), 3), new EmptyBorder(22, 28, 22, 28)));
+                BorderFactory.createLineBorder(new Color(143, 157, 164), 3), new EmptyBorder(12, 25, 20, 25)));
+        machine.add(fascia(), BorderLayout.NORTH);
         machine.add(leftPanel(), BorderLayout.WEST);
         screen.setBackground(SCREEN);
         screen.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(13, 20, 26), 10), new EmptyBorder(20, 35, 20, 35)));
+                BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(10, 15, 19), 11), BorderFactory.createLineBorder(new Color(80, 95, 102), 2)), new EmptyBorder(20, 35, 20, 35)));
         addPages();
         machine.add(screen, BorderLayout.CENTER);
         machine.add(keypad(), BorderLayout.EAST);
+        machine.add(bottomBay(), BorderLayout.SOUTH);
         return machine;
+    }
+
+    private JPanel fascia() {
+        JPanel p = new JPanel(new BorderLayout()); p.setBackground(new Color(8, 55, 94)); p.setBorder(new EmptyBorder(11, 22, 11, 22));
+        JLabel brand = new JLabel("BITHM NATIONAL BANK"); brand.setForeground(Color.WHITE); brand.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        JLabel availability = new JLabel("●  24/7 ATM  •  SECURE BANKING"); availability.setForeground(new Color(116, 235, 175)); availability.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        p.add(brand, BorderLayout.WEST); p.add(availability, BorderLayout.EAST); return p;
+    }
+
+    private JPanel bottomBay() {
+        JPanel p = new JPanel(new BorderLayout(20, 0)); p.setBackground(new Color(38, 45, 50)); p.setBorder(new EmptyBorder(9, 175, 0, 175));
+        JPanel cash = hardwareBay("CASH DISPENSER", new Color(45, 174, 135), cashPort, 280);
+        JPanel receipt = hardwareBay("RECEIPT PRINTER", new Color(231, 201, 101), receiptPort, 120);
+        p.add(cash, BorderLayout.CENTER); p.add(receipt, BorderLayout.EAST); return p;
+    }
+
+    private JPanel hardwareBay(String name, Color light, PortAnimation port, int width) {
+        JPanel p = column(); p.setBackground(new Color(24, 29, 33)); p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(105, 118, 123)), new EmptyBorder(5, 12, 7, 12)));
+        p.add(label(name + "   ●", 9, light, SwingConstants.CENTER));
+        int portHeight = name.startsWith("CASH") ? 126 : 76;
+        port.setPreferredSize(new Dimension(width, portHeight)); port.setMaximumSize(new Dimension(width, portHeight)); port.setAlignmentX(Component.CENTER_ALIGNMENT); p.add(port); return p;
     }
 
     private JPanel leftPanel() {
         JPanel left = column();
         left.setPreferredSize(new Dimension(165, 0));
         left.setBackground(new Color(43, 50, 56));
-        JLabel brand = label("BITHM\nNATIONAL", 19, Color.WHITE, SwingConstants.CENTER);
+        JLabel brand = label("CARD ACCESS", 14, Color.WHITE, SwingConstants.CENTER);
         brand.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(brand);
-        left.add(Box.createVerticalStrut(22));
-        JLabel light = label("●  ONLINE", 13, new Color(91, 221, 144), SwingConstants.CENTER);
+        left.add(Box.createVerticalStrut(8));
+        JLabel light = label("◒  CONTACTLESS READY", 10, new Color(91, 221, 144), SwingConstants.CENTER);
         light.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(light);
         left.add(Box.createVerticalGlue());
@@ -120,7 +143,7 @@ public class ATMGui {
         JPanel holder = column();
         holder.setPreferredSize(new Dimension(170, 0));
         holder.setBackground(new Color(43, 50, 56));
-        JLabel title = label("SECURE KEYPAD", 12, new Color(210, 220, 225), SwingConstants.CENTER);
+        JLabel title = label("SECURE KEYPAD • ⠿", 12, new Color(210, 220, 225), SwingConstants.CENTER);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         holder.add(title);
         holder.add(Box.createVerticalStrut(14));
@@ -131,15 +154,14 @@ public class ATMGui {
             key.setFont(new Font("Segoe UI", Font.BOLD, value.equals("ENTER") ? 10 : 16));
             key.setForeground(Color.WHITE);
             key.setBackground(value.equals("C") ? new Color(180, 72, 67) : value.equals("ENTER") ? TEAL : new Color(82, 91, 98));
+            key.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(171, 186, 194)), new EmptyBorder(5, 5, 5, 5)));
             key.setFocusPainted(false);
             key.addActionListener(e -> handleKey(value));
             keys.add(key);
         }
         holder.add(keys);
         holder.add(Box.createVerticalGlue());
-        cashPort.setAlignmentX(Component.CENTER_ALIGNMENT);
-        receiptPort.setAlignmentX(Component.CENTER_ALIGNMENT);
-        holder.add(cashPort); holder.add(Box.createVerticalStrut(12)); holder.add(receiptPort);
+        holder.add(label("●  HELP / ACCESSIBILITY", 9, new Color(183, 195, 202), SwingConstants.CENTER));
         return holder;
     }
 
@@ -353,7 +375,7 @@ public class ATMGui {
             bank.processTransaction(t);
             if (type.equals("withdraw")) {
                 pendingAmount = amount;
-                showProcessing("PROCESSING WITHDRAWAL", "Please wait while your cash is prepared…", () -> cashPort.dispense(() -> {
+                showProcessing("COUNTING NOTES", "Please wait while your cash is prepared…", () -> cashPort.dispense(amount, () -> {
                     collectionHeading.setText("PLEASE COLLECT YOUR CASH"); showPage("collection");
                 }));
             } else {
@@ -439,23 +461,28 @@ public class ATMGui {
         private final String kind;
         private double progress = -1;
         private double shutterProgress;
+        private double displayedAmount = 500;
+        private int noteCount = 1;
         private boolean inserted;
         private String status = "READY";
         private Timer timer;
 
         PortAnimation(String title, Color accent, String kind) {
             this.title = title; this.accent = accent; this.kind = kind;
-            int height = kind.equals("CARD") ? 210 : 76;
+            int height = kind.equals("CARD") ? 210 : kind.equals("CASH") ? 126 : 76;
             setPreferredSize(new Dimension(132, height)); setMaximumSize(new Dimension(132, height));
             setOpaque(false);
         }
 
         void insert(Runnable done) { animate(0, 1, () -> { inserted = true; done.run(); }); }
         void eject(Runnable done) { animate(1, 0, () -> { inserted = true; done.run(); }); }
-        void dispense(Runnable done) {
+        void dispense(double amount, Runnable done) {
+            displayedAmount = amount;
+            noteCount = Math.max(1, Math.min(5, (int) Math.ceil(amount / 1000.0)));
             if (kind.equals("CASH")) animateShutter(0, 1, () -> animate(0, 1, done));
             else animate(0, 1, done);
         }
+        void dispense(Runnable done) { dispense(500, done); }
         void collect(Runnable done) {
             if (kind.equals("CASH")) animate(1, 0, () -> animateShutter(1, 0, () -> { progress = -1; repaint(); done.run(); }));
             else animate(1, 0, () -> { progress = -1; repaint(); done.run(); });
@@ -495,7 +522,7 @@ public class ATMGui {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             int w = getWidth(), h = getHeight();
-            int slotY = kind.equals("CARD") ? 92 : 38;
+            int slotY = kind.equals("CARD") ? 92 : kind.equals("CASH") ? 44 : 38;
             int readerHeight = kind.equals("CARD") ? 108 : h - 31;
             g2.setPaint(new GradientPaint(0, 18, new Color(75, 85, 91), 0, 63, new Color(24, 29, 33)));
             g2.fillRoundRect(2, 18, w - 4, readerHeight, 7, 7);
@@ -560,16 +587,17 @@ public class ATMGui {
                 g2.drawString("••••", x + 18, y + 58); g2.drawString("••••", x + 18, y + 66); g2.drawString("2222", x + 18, y + 74);
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 5)); g2.drawString("M. P. AYAT", x + 10, y + 84);
             } else if (kind.equals("CASH")) {
-                int y = (int) (25 + Math.max(0, progress) * 31);
-                for (int i = 2; i >= 0; i--) {
-                    int offset = i * 4;
-                    g2.setPaint(new GradientPaint(22, y - offset, new Color(209, 234, 183), 105, y + 25 - offset, new Color(93, 156, 83)));
-                    g2.fillRoundRect(22 + offset, y - offset, w - 48, 25, 3, 3);
-                    g2.setColor(new Color(50, 112, 59)); g2.drawRoundRect(22 + offset, y - offset, w - 49, 24, 3, 3);
+                int y = (int) (23 + Math.max(0, progress) * 34), noteW = Math.min(w - 48, 150), x = (w - noteW) / 2;
+                for (int i = noteCount - 1; i >= 0; i--) {
+                    int offset = i * 3;
+                    g2.setPaint(new GradientPaint(x, y - offset, new Color(209, 234, 183), x + noteW, y + 25 - offset, new Color(93, 156, 83)));
+                    g2.fillRoundRect(x + offset, y - offset, noteW, 25, 3, 3);
+                    g2.setColor(new Color(50, 112, 59)); g2.drawRoundRect(x + offset, y - offset, noteW - 1, 24, 3, 3);
                 }
-                g2.setColor(new Color(229, 246, 209)); g2.fillOval(w / 2 - 10, y + 3, 20, 17);
-                g2.setColor(new Color(39, 104, 50)); g2.setFont(new Font("Segoe UI", Font.BOLD, 8)); g2.drawString("500", w / 2 - 8, y + 15);
-                g2.setFont(new Font("Monospaced", Font.PLAIN, 5)); g2.drawString("BNB • AUTHENTIC", 29, y + 22);
+                g2.setColor(new Color(229, 246, 209)); g2.fillOval(w / 2 - 12, y + 3, 24, 17);
+                g2.setColor(new Color(39, 104, 50)); g2.setFont(new Font("Segoe UI", Font.BOLD, 8)); g2.drawString(String.valueOf((int) displayedAmount), w / 2 - 13, y + 15);
+                g2.setFont(new Font("Monospaced", Font.PLAIN, 5)); g2.drawString("BNB • AUTHENTIC", x + 8, y + 22);
+                g2.setColor(new Color(48, 104, 54)); g2.fillRect(x + noteW - 24, y + 3, 3, 18);
             } else {
                 int y = (int) (24 + Math.max(0, progress) * 25), x = 28, paperW = w - 56;
                 g2.setColor(new Color(252, 250, 239)); g2.fillRect(x, y, paperW, 48);
