@@ -1,106 +1,217 @@
-# BITHM National Bank ATM Simulator
+<div align="center">
 
-A Java Swing desktop application that turns an ATM UML class model into an interactive, realistic ATM simulation. The project includes customer banking transactions, technician maintenance functions, physical-style card/cash/receipt animations, and ATM-like sound feedback.
+# BITHM National Bank — Realistic ATM Simulator
 
-Built for the OTHM Level 4 & 5 in IT Software Engineering coursework (Task 2, Part 1–a).
+**Interactive Java Swing ATM Kiosk • Boundary–Control–Entity UML Implementation**
 
-## Highlights
+  <p align="center">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=800&size=19&pause=1400&color=38BDF8&center=true&vCenter=true&width=900&lines=BITHM+National+Bank+ATM+Simulator;Java+Swing+%E2%80%A2+OOP+%E2%80%A2+UML+Boundary-Control-Entity;Interactive+Card+%E2%80%A2+Cash+%E2%80%A2+Receipt+%E2%80%A2+Sound+Simulation" alt="Project heading animation" />
+  </p>
 
-- Realistic ATM kiosk interface with card reader, cash dispenser, receipt printer, and keypad
-- Animated card insertion/ejection, cash collection, deposit intake, and receipt printing
-- Customer authentication with a four-digit PIN and three-attempt lockout
-- Balance inquiry, cash withdrawal, cash deposit, fund transfer, and mini statement
-- ATM cash availability validation before a withdrawal is completed
-- Technician service console for replenishment, upgrade, diagnostic, and repair activities
-- Automatic ATM-style audio feedback for keypad, card reader, cash dispenser, receipt printer, and errors
+  <p align="center">
+    <img src="https://img.shields.io/badge/JAVA-JDK_11%2B-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white&labelColor=0D1117" alt="Java JDK 11 or later" />
+    <img src="https://img.shields.io/badge/INTERFACE-Java_Swing-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="Java Swing interface" />
+    <img src="https://img.shields.io/badge/ARCHITECTURE-BCE_UML-8B5CF6?style=for-the-badge&labelColor=0D1117" alt="Boundary Control Entity architecture" />
+    <img src="https://img.shields.io/badge/BUILD-PASSING-10B981?style=for-the-badge&labelColor=0D1117" alt="Build passing" />
+  </p>
 
-## UML model implementation
+  <p align="center">
+    <a href="#-features"><img src="https://img.shields.io/badge/Features-10B981?style=for-the-badge&labelColor=0D1117" alt="Features" /></a>
+    <a href="#-uml--oop-design"><img src="https://img.shields.io/badge/UML_%26_OOP-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="UML and OOP" /></a>
+    <a href="#-demo-accounts"><img src="https://img.shields.io/badge/Demo_Accounts-7C3AED?style=for-the-badge&labelColor=0D1117" alt="Demo accounts" /></a>
+    <a href="#-getting-started"><img src="https://img.shields.io/badge/Getting_Started-F97316?style=for-the-badge&labelColor=0D1117" alt="Getting started" /></a>
+  </p>
 
-The application follows the Boundary–Control–Entity UML design.
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Divider animation" />
 
-| Layer | Classes |
-|---|---|
-| Boundary | `ATM` |
-| Control | `Bank`, `Transaction`, `Withdrawal`, `Deposit`, `Transfer`, `BalanceInquiry`, `ServiceActivity`, `Maintenance`, `Replenishment`, `Upgrade`, `Diagnostic`, `Repair` |
-| Entity | `Card`, `Customer`, `Account`, `ATMTechnician` |
-| User interface | `ATMGui`, `SoundEffects`, `Main` |
+</div>
 
-## Demo accounts
+---
 
-On the welcome screen, choose a demo card before inserting it.
+<div align="center">
 
-| Customer | Card number | PIN | Accounts |
-|---|---|---|---|
-| Ziana Mehnaz Ruhee | `1111-2222-3333-4444` | `1234` | `ACC-1001` savings, `ACC-1002` current |
-| Mopara Pair Ayat | `5555-6666-7777-8888` | `4321` | `ACC-2001` savings |
+<a id="academic-submission"></a>
 
-Technician access is available from the welcome screen. The demo technician is **Mopara Pair Ayat**.
+## 📜 Academic Submission & Course Dossier
 
-## Run the application
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=700&size=19&pause=1400&color=FCD34D&center=true&vCenter=true&width=850&lines=%E2%9C%A8+Software+Engineering+Major+Coursework+%E2%9C%A8;Student%3A+Mopara+Pair+Ayat;Instructor%3A+Ziana+Mehnaz+Ruhee;Institution%3A+BITHM+College+Of+Professionals;Qualification%3A+OTHM+Level+5+in+IT%2FCSE" alt="Academic information animation" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/STUDENT-Mopara_Pair_Ayat-0EA5E9?style=for-the-badge&logo=github&logoColor=white&labelColor=0D1117" alt="Student Mopara Pair Ayat" />
+  <img src="https://img.shields.io/badge/INSTRUCTOR-Ziana_Mehnaz_Ruhee-F59E0B?style=for-the-badge&logo=award&logoColor=white&labelColor=0D1117" alt="Instructor Ziana Mehnaz Ruhee" />
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/INSTITUTION-BITHM_College_Of_Professionals-10B981?style=for-the-badge&logo=graduation-cap&logoColor=white&labelColor=0D1117" alt="BITHM College Of Professionals" />
+  <img src="https://img.shields.io/badge/QUALIFICATION-OTHM_Level_5_in_IT%2FCSE-8B5CF6?style=for-the-badge&labelColor=0D1117" alt="OTHM Level 5 in IT/CSE" />
+  <img src="https://img.shields.io/badge/SUBJECT-Software_Engineering-EC4899?style=for-the-badge&labelColor=0D1117" alt="Software Engineering" />
+</p>
+
+| ⚜️ Specification | 🏆 Project Record |
+| :--- | :--- |
+| **Project** | `BITHM National Bank ATM Simulator` |
+| **Student Name** | `Mopara Pair Ayat` &nbsp;&nbsp; 🌟 *Primary Developer* |
+| **Course Instructor** | `Ziana Mehnaz Ruhee` &nbsp;&nbsp; 🎓 *Project Evaluator & Mentor* |
+| **Educational Institute** | **BITHM College Of Professionals** &nbsp;&nbsp; 🏫 *Affiliated Campus* |
+| **Qualification Level** | `OTHM Level 5 in IT/CSE` &nbsp;&nbsp; 🇬🇧 *UK Regulated Framework* |
+| **Subject Name** | `Software Engineering` &nbsp;&nbsp; 💻 *Core Computer Science Unit* |
+| **Coursework** | `Task 2, Part 1-a` — ATM System UML implementation |
+
+</div>
+
+---
+
+## 📦 Overview
+
+This project transforms an ATM UML class diagram into a working Java desktop application. It combines core banking operations with a physical ATM-style interface: card insertion, PIN authentication, cash dispensing and collection, deposit intake, receipt printing, keypad input, and ATM-style sound feedback.
+
+It is an academic software simulation. No physical bank hardware or live banking network is connected.
+
+---
+
+## 🎯 Features
+
+<a id="features"></a>
+
+- 🏧 **Realistic ATM Kiosk UI** — visual card reader, secure keypad, cash dispenser, receipt printer, status LEDs, and BITHM bank branding.
+- 💳 **Interactive Card Journey** — choose a demo card, animate insertion, authenticate with a four-digit PIN, and eject the card at the end of the session.
+- 🔐 **Secure PIN Handling** — keypad input, clear button, confirmation, warning sound, and three-attempt lockout behaviour.
+- 💸 **Customer Transactions** — balance inquiry, cash withdrawal, cash deposit, fund transfer, and mini statement.
+- 💵 **Physical Cash Simulation** — note counting, shutter opening, amount-aware note stack, and cash collection flow.
+- 🧾 **Receipt Simulation** — receipt choice, printer animation, and collection flow.
+- 🛠️ **Technician Console** — replenishment, upgrade, diagnostics, and repair actions using the maintenance class model.
+- 🔊 **Generated Sound Effects** — programmatic reader, keypad, cash-dispenser, receipt-printer, confirmation, and warning tones; no external audio files required.
+
+---
+
+## 🏛️ UML & OOP Design
+
+<a id="uml--oop-design"></a>
+
+The application is organised around the **Boundary–Control–Entity** model from the supplied UML diagrams.
+
+| Layer | Implemented classes |
+| :--- | :--- |
+| **Boundary** | `ATM` |
+| **Control** | `Bank`, `Transaction`, `Withdrawal`, `Deposit`, `Transfer`, `BalanceInquiry` |
+| **Service control** | `ServiceActivity`, `Maintenance`, `Replenishment`, `Upgrade`, `Diagnostic`, `Repair` |
+| **Entity** | `Card`, `Customer`, `Account`, `ATMTechnician` |
+| **Presentation** | `ATMGui`, `SoundEffects`, `Main` |
+
+### Key relationships
+
+```text
+Customer ── holds ──> Card
+Customer ── owns ──> Account
+Bank ── manages ──> Account
+ATM ── connects to ──> Bank
+ATM ── validates ──> Card
+Transaction ── recorded against ──> Account
+ATMTechnician ── performs ──> ServiceActivity
+```
+
+---
+
+## 👤 Demo Accounts
+
+<a id="demo-accounts"></a>
+
+Choose a card from the simulator welcome screen, then use the associated PIN.
+
+| Customer | Card number | PIN | Available accounts |
+| :--- | :--- | :---: | :--- |
+| **Ziana Mehnaz Ruhee** | `1111-2222-3333-4444` | `1234` | `ACC-1001` savings, `ACC-1002` current |
+| **Mopara Pair Ayat** | `5555-6666-7777-8888` | `4321` | `ACC-2001` savings |
+
+Technician access is available from the welcome screen. The configured demo technician is **Mopara Pair Ayat**.
+
+---
+
+## 🧭 ATM Transaction Flow
+
+```text
+Choose demo card → Insert card → Enter PIN → Select transaction
+→ Process transaction → Collect cash / confirm deposit
+→ Optional receipt → Take card
+```
+
+---
+
+## ⚙️ Getting Started
+
+<a id="getting-started"></a>
 
 ### Requirements
 
-- JDK 11 or later
-- Windows, macOS, or Linux desktop environment with Java Swing support
+- **JDK:** version 11 or later
+- **Platform:** Windows, macOS, or Linux desktop with Java Swing support
 
-### Compile and start
+### Compile and run
 
 ```powershell
 javac -d bin src/atm/*.java
 java -cp bin atm.Main
 ```
 
-The `bin` directory is generated during compilation and is intentionally excluded from Git.
+> `bin/` is generated at compile time and intentionally excluded from version control.
 
-## Customer journey
+---
 
-```text
-Choose demo card → Insert card → Enter PIN → Select transaction
-→ Process transaction → Collect cash or confirm deposit
-→ Optional receipt → Take card
-```
-
-## Project structure
+## 📁 Project Structure
 
 ```text
 src/
 └── atm/
-    ├── Main.java               Application entry point and demo data
-    ├── ATMGui.java             Swing ATM kiosk interface and animations
-    ├── SoundEffects.java       Generated ATM-style sound effects
+    ├── Main.java               Application entry point and seeded demo data
+    ├── ATMGui.java             ATM kiosk interface, transactions, and animations
+    ├── SoundEffects.java       Generated ATM-style audio effects
     ├── ATM.java                ATM boundary model
     ├── Bank.java               Bank transaction control
-    ├── Transaction.java        Abstract transaction model
-    ├── Withdrawal.java
-    ├── Deposit.java
-    ├── Transfer.java
-    ├── BalanceInquiry.java
-    ├── Card.java
-    ├── Customer.java
-    ├── Account.java
-    ├── ATMTechnician.java
-    ├── ServiceActivity.java
-    ├── Maintenance.java
+    ├── Transaction.java        Abstract transaction base class
+    ├── Withdrawal.java         Cash withdrawal transaction
+    ├── Deposit.java            Cash deposit transaction
+    ├── Transfer.java           Account transfer transaction
+    ├── BalanceInquiry.java     Balance inquiry transaction
+    ├── Card.java               Card entity and PIN validation
+    ├── Customer.java           Customer entity
+    ├── Account.java            Account entity and balance operations
+    ├── ATMTechnician.java      Technician entity
+    ├── ServiceActivity.java    Abstract service activity
+    ├── Maintenance.java        Abstract maintenance activity
     ├── Replenishment.java
     ├── Upgrade.java
     ├── Diagnostic.java
     └── Repair.java
 ```
 
-## Validation completed
+---
 
-- Successful and unsuccessful PIN authentication, including three-attempt lockout
-- Balance inquiry, deposit, withdrawal, and transfer flows
-- Invalid amounts, insufficient account funds, and insufficient ATM cash
-- Cash/receipt/card animation flows
+## 🧪 Validation
+
+```powershell
+javac -d bin src/atm/*.java
+```
+
+The project has been checked for:
+
+- Valid and invalid PIN authentication, including three-attempt lockout
+- Balance inquiry, deposit, withdrawal, and transfer paths
+- Invalid input, insufficient account balance, and insufficient ATM cash
+- Card, cash, receipt, and deposit animation flows
 - Technician maintenance and repair actions
-- Full project compilation with `javac`
 
-## Scope note
+---
 
-This is a software simulation for academic use. Card readers, cash dispensers, receipts, and sounds are visual/audio simulations; no physical banking hardware or live banking system is connected.
+## 📄 Scope & License
 
-## Author
+This project is provided for academic demonstration purposes. It simulates ATM hardware and does not connect to a real banking service, card reader, cash dispenser, or printer.
 
-- Student: Mopara Pair Ayat
-- Instructor: Ziana Mehnaz Ruhee
+<div align="center">
+
+  <img src="https://user-images.githubusercontent.com/74038190/212284100-561aa473-3987-4801-a50e-c67081e2b58b.gif" width="100%" alt="Footer divider animation" />
+
+<sub>Built with Java, UML-driven OOP design, and BITHM National Bank ATM simulation.</sub>
+
+</div>
