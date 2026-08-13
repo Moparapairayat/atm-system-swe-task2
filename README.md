@@ -57,7 +57,7 @@
 | **Educational Institute** | **BITHM College Of Professionals** &nbsp;&nbsp; 🏫 *Affiliated Campus* |
 | **Qualification Level** | `OTHM Level 5 in IT/CSE` &nbsp;&nbsp; 🇬🇧 *UK Regulated Framework* |
 | **Subject Name** | `Software Engineering` &nbsp;&nbsp; 💻 *Core Computer Science Unit* |
-| **Coursework** | `Task 2, Part 1-a` — ATM System UML implementation |
+| **Coursework** | `Task 1, Part 1-c` — ATM System UML implementation |
 
 </div>
 
