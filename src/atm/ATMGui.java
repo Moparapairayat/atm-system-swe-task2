@@ -1,6 +1,7 @@
 package atm;
 
 import java.awt.BorderLayout;
+import java.awt.BasicStroke;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -18,6 +19,7 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -54,6 +56,7 @@ public class ATMGui {
     private final JLabel balanceValue = new JLabel("", SwingConstants.CENTER);
     private final JLabel detectedCardLabel = new JLabel("", SwingConstants.CENTER);
     private final JTextArea statementContent = new JTextArea();
+    private final JPanel accountSelectionOptions = column();
     private JPasswordField activePinField;
     private Customer activeCustomer;
     private Customer pendingCustomer;
@@ -169,6 +172,7 @@ public class ATMGui {
         screen.add(welcomePage(), "welcome");
         screen.add(loginPage(), "login");
         screen.add(cardSelectionPage(), "cardSelection");
+        screen.add(accountSelectionPage(), "accountSelection");
         screen.add(menuPage(), "menu");
         screen.add(amountPage("withdraw"), "withdraw");
         screen.add(amountPage("deposit"), "deposit");
@@ -214,20 +218,22 @@ public class ATMGui {
         JPasswordField pin = (JPasswordField) field("PIN", true);
         activePinField = pin;
         cardPanel.add(pin); cardPanel.add(Box.createVerticalStrut(9));
-        cardPanel.add(label("🔒  Shield your PIN while entering it", 11, new Color(88, 112, 125), SwingConstants.CENTER));
+        cardPanel.add(singleLineHint("Shield your PIN while entering it", 350));
         p.add(cardPanel); p.add(Box.createVerticalStrut(18));
         p.add(action("CONTINUE", BLUE, e -> authenticatePending(new String(pin.getPassword()))));
         p.add(Box.createVerticalStrut(10));
         p.add(action("CANCEL / EJECT CARD", new Color(90, 102, 110), e -> ejectCard()));
         p.add(Box.createVerticalGlue());
-        p.add(label("🔒  Please do not remove your card until instructed", 11, new Color(88, 112, 125), SwingConstants.CENTER));
+        p.add(singleLineHint("Please do not remove your card until instructed", 500));
         return p;
     }
 
     private JPanel cardSelectionPage() {
         JPanel p = centered(); addAtmHeader(p, "INSERT DEMO CARD", "Choose the customer card to insert into this simulator."); p.add(Box.createVerticalStrut(28));
-        p.add(action("ZIANA MEHNAZ RUHEE  •  •••• 4444", BLUE, e -> beginCardInsertion(customers[0]))); p.add(Box.createVerticalStrut(12));
-        p.add(action("MOPARA PAIR AYAT  •  •••• 8888", TEAL, e -> beginCardInsertion(customers[1]))); p.add(Box.createVerticalStrut(12));
+        p.add(action("ZIANA MEHNAZ RUHEE  •  •••• 4444", BLUE, e -> beginCardInsertion(customers[0])));
+        p.add(label("Demo PIN: 1234", 11, new Color(70, 91, 105), SwingConstants.CENTER)); p.add(Box.createVerticalStrut(12));
+        p.add(action("MOPARA PAIR AYAT  •  •••• 8888", TEAL, e -> beginCardInsertion(customers[1])));
+        p.add(label("Demo PIN: 4321", 11, new Color(70, 91, 105), SwingConstants.CENTER)); p.add(Box.createVerticalStrut(12));
         p.add(action("BACK", new Color(90, 102, 110), e -> showPage("welcome"))); p.add(Box.createVerticalGlue()); addSecureFooter(p); return p;
     }
 
@@ -244,6 +250,20 @@ public class ATMGui {
         grid.add(action("EJECT CARD", new Color(166, 76, 69), e -> ejectCard()));
         p.add(grid);
         p.add(Box.createVerticalGlue()); addSecureFooter(p);
+        return p;
+    }
+
+    private JPanel accountSelectionPage() {
+        JPanel p = centered();
+        addAtmHeader(p, "SELECT AN ACCOUNT", "Choose the account for this ATM session.");
+        p.add(Box.createVerticalStrut(28));
+        accountSelectionOptions.setOpaque(false);
+        accountSelectionOptions.setMaximumSize(new Dimension(460, 220));
+        p.add(accountSelectionOptions);
+        p.add(Box.createVerticalStrut(12));
+        p.add(action("CANCEL / EJECT CARD", new Color(90, 102, 110), e -> ejectCard()));
+        p.add(Box.createVerticalGlue());
+        addSecureFooter(p);
         return p;
     }
 
@@ -365,8 +385,13 @@ public class ATMGui {
         Customer c = pendingCustomer;
         if (atm.insertCard(c.getCard(), pin)) {
             SoundEffects.accepted();
-            activeCustomer = c; activeAccount = c.getAccounts().get(0); pinAttempts = 0;
-            customerLabel.setText("CARD ACTIVE"); cardPort.setStatus("CARD ACTIVE"); showPage("menu"); return;
+            activeCustomer = c;
+            activeAccount = null;
+            pinAttempts = 0;
+            customerLabel.setText("CARD ACTIVE");
+            cardPort.setStatus("CARD ACTIVE");
+            showAccountSelection();
+            return;
         }
         pinAttempts++; SoundEffects.warning();
         dialog(pinAttempts >= 3 ? "Card retained after 3 incorrect PIN attempts." : "Incorrect PIN. Attempts remaining: " + (3 - pinAttempts));
@@ -407,6 +432,26 @@ public class ATMGui {
     }
 
     private void showBalance() { balanceValue.setText(money.format(activeAccount.checkBalance())); showPage("balance"); }
+    private void showAccountSelection() {
+        accountSelectionOptions.removeAll();
+        if (activeCustomer == null || activeCustomer.getAccounts().isEmpty()) {
+            dialog("No account is linked to this card.");
+            ejectCard();
+            return;
+        }
+        int index = 1;
+        for (Account account : activeCustomer.getAccounts()) {
+            String text = "ACCOUNT " + index++ + "  •  " + account.getAccountNumber();
+            accountSelectionOptions.add(action(text, index == 2 ? BLUE : TEAL, e -> {
+                activeAccount = account;
+                showPage("menu");
+            }));
+            accountSelectionOptions.add(Box.createVerticalStrut(12));
+        }
+        accountSelectionOptions.revalidate();
+        accountSelectionOptions.repaint();
+        showPage("accountSelection");
+    }
     private void miniStatement() {
         StringBuilder statement = new StringBuilder();
         statement.append("      BITHM NATIONAL BANK\n");
@@ -463,6 +508,7 @@ public class ATMGui {
     private void beginCardInsertion(Customer customer) {
         customerLabel.setText("CARD DETECTED"); cardPort.setStatus("CARD DETECTED"); SoundEffects.cardReader();
         pendingCustomer = customer;
+        cardPort.setCardDetails(customer.getName(), customer.getCard().getCardNumber());
         detectedCardLabel.setText("Card detected:  " + maskedCard(customer.getCard().getCardNumber()));
         Timer detect = new Timer(400, e -> cardPort.insert(() ->
                 showProcessing("READING CARD", "Please wait while your card is verified…", () -> showPage("login"))));
@@ -496,7 +542,35 @@ public class ATMGui {
         JPanel tile = column(); tile.setBackground(Color.WHITE); tile.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(189, 207, 215)), new EmptyBorder(7, 8, 7, 8)));
         tile.add(label(title, 9, new Color(70, 91, 105), SwingConstants.CENTER)); tile.add(label("● " + value, 10, color, SwingConstants.CENTER)); return tile;
     }
+    private JLabel singleLineHint(String text, int width) {
+        JLabel hint = new JLabel(text, new LockIcon(new Color(88, 112, 125)), SwingConstants.CENTER);
+        hint.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        hint.setForeground(new Color(88, 112, 125));
+        hint.setIconTextGap(5);
+        hint.setAlignmentX(Component.CENTER_ALIGNMENT);
+        hint.setPreferredSize(new Dimension(width, 18));
+        hint.setMaximumSize(new Dimension(width, 18));
+        return hint;
+    }
     private JLabel label(String text, int size, Color color, int alignment) { JLabel l = new JLabel("<html>" + text.replace("\n", "<br>") + "</html>", alignment); l.setFont(new Font("Segoe UI", Font.BOLD, size)); l.setForeground(color); l.setAlignmentX(Component.CENTER_ALIGNMENT); return l; }
+
+    private static final class LockIcon implements Icon {
+        private final Color color;
+
+        private LockIcon(Color color) { this.color = color; }
+        @Override public int getIconWidth() { return 12; }
+        @Override public int getIconHeight() { return 14; }
+        @Override public void paintIcon(Component component, Graphics graphics, int x, int y) {
+            Graphics2D g = (Graphics2D) graphics.create();
+            g.setColor(color);
+            g.setStroke(new BasicStroke(1.6f));
+            g.drawRoundRect(x + 3, y + 1, 6, 7, 4, 4);
+            g.fillRoundRect(x + 1, y + 6, 10, 7, 2, 2);
+            g.setColor(SCREEN);
+            g.fillRect(x + 5, y + 9, 2, 2);
+            g.dispose();
+        }
+    }
     private void handleKey(String value) {
         if (activePinField == null || !activePinField.isShowing()) return;
         SoundEffects.keypad();
@@ -522,6 +596,8 @@ public class ATMGui {
         private int noteCount = 1;
         private boolean inserted;
         private String status = "READY";
+        private String cardHolder = "CARD HOLDER";
+        private String cardLastFour = "0000";
         private Timer timer;
 
         PortAnimation(String title, Color accent, String kind) {
@@ -553,6 +629,20 @@ public class ATMGui {
         }
         void removeItem() { inserted = false; progress = -1; repaint(); }
         void setStatus(String value) { status = value; repaint(); }
+        void setCardDetails(String holderName, String cardNumber) {
+            cardHolder = abbreviatedCardHolder(holderName);
+            cardLastFour = cardNumber.substring(Math.max(0, cardNumber.length() - 4));
+            repaint();
+        }
+        private String abbreviatedCardHolder(String holderName) {
+            String[] parts = holderName.trim().split("\\s+");
+            if (parts.length < 2) return holderName.toUpperCase();
+            StringBuilder abbreviated = new StringBuilder();
+            for (int i = 0; i < parts.length - 1; i++) {
+                abbreviated.append(Character.toUpperCase(parts[i].charAt(0))).append(". ");
+            }
+            return abbreviated.append(parts[parts.length - 1].toUpperCase()).toString();
+        }
 
         private void animate(double from, double to, Runnable done) {
             if (timer != null && timer.isRunning()) timer.stop();
@@ -638,18 +728,25 @@ public class ATMGui {
         private void drawItem(Graphics2D g2, int w) {
             if (kind.equals("CARD")) {
                 double eased = Math.max(0, progress) * Math.max(0, progress) * (3 - 2 * Math.max(0, progress));
-                int x = 37, y = (int) (112 - eased * 108), cardW = 58, cardH = 92;
-                g2.setPaint(new GradientPaint(x, y, new Color(20, 113, 183), x + cardW, y + cardH, new Color(6, 42, 89)));
-                g2.fillRoundRect(x, y, cardW, cardH, 8, 8);
-                g2.setColor(new Color(154, 217, 239)); g2.drawRoundRect(x, y, cardW - 1, cardH - 1, 8, 8);
-                g2.setColor(new Color(206, 233, 247)); g2.setFont(new Font("Segoe UI", Font.BOLD, 6)); g2.drawString("BITHM", x + 15, y + 12);
-                g2.drawString("NATIONAL", x + 10, y + 19);
-                g2.setColor(new Color(220, 185, 74)); g2.fillRoundRect(x + 18, y + 28, 22, 17, 3, 3);
-                g2.setColor(new Color(173, 132, 42)); g2.drawLine(x + 18, y + 36, x + 40, y + 36);
-                g2.drawLine(x + 29, y + 28, x + 29, y + 45);
+                int cardW = 68;
+                int x = (w - cardW) / 2, y = (int) (102 - eased * 98);
+                java.awt.geom.AffineTransform originalTransform = g2.getTransform();
+                double scale = cardW / 58.0;
+                g2.translate(x, y); g2.scale(scale, scale);
+                g2.setPaint(new GradientPaint(0, 0, new Color(20, 113, 183), 58, 92, new Color(6, 42, 89)));
+                g2.fillRoundRect(0, 0, 58, 92, 8, 8);
+                g2.setColor(new Color(154, 217, 239)); g2.drawRoundRect(0, 0, 57, 91, 8, 8);
+                g2.setColor(new Color(206, 233, 247)); g2.setFont(new Font("Segoe UI", Font.BOLD, 6)); g2.drawString("BITHM", 15, 12);
+                g2.drawString("NATIONAL", 10, 19);
+                g2.setColor(new Color(220, 185, 74)); g2.fillRoundRect(18, 28, 22, 17, 3, 3);
+                g2.setColor(new Color(173, 132, 42)); g2.drawLine(18, 36, 40, 36);
+                g2.drawLine(29, 28, 29, 45);
                 g2.setColor(Color.WHITE); g2.setFont(new Font("Monospaced", Font.PLAIN, 6));
-                g2.drawString("••••", x + 18, y + 58); g2.drawString("••••", x + 18, y + 66); g2.drawString("2222", x + 18, y + 74);
-                g2.setFont(new Font("Segoe UI", Font.BOLD, 5)); g2.drawString("M. P. AYAT", x + 10, y + 84);
+                g2.drawString("••••", 18, 58); g2.drawString("••••", 18, 66); g2.drawString(cardLastFour, 18, 74);
+                g2.setFont(new Font("Segoe UI", Font.BOLD, 4));
+                int holderWidth = g2.getFontMetrics().stringWidth(cardHolder);
+                g2.drawString(cardHolder, (58 - holderWidth) / 2, 84);
+                g2.setTransform(originalTransform);
             } else if (kind.equals("CASH")) {
                 int y = (int) (23 + Math.max(0, progress) * 34), noteW = Math.min(w - 48, 150), x = (w - noteW) / 2;
                 for (int i = noteCount - 1; i >= 0; i--) {

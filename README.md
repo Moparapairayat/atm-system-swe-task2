@@ -57,7 +57,7 @@
 | **Educational Institute** | **BITHM College Of Professionals** &nbsp;&nbsp; 🏫 *Affiliated Campus* |
 | **Qualification Level** | `OTHM Level 5 in IT/CSE` &nbsp;&nbsp; 🇬🇧 *UK Regulated Framework* |
 | **Subject Name** | `Software Engineering` &nbsp;&nbsp; 💻 *Core Computer Science Unit* |
-| **Coursework** | `Task 1, Part 1-c` — ATM System UML implementation |
+| **Coursework** | `Task 2, Part 1 (Activity c)` — ATM System UML implementation |
 
 </div>
 
@@ -76,7 +76,7 @@ It is an academic software simulation. No physical bank hardware or live banking
 <a id="features"></a>
 
 - 🏧 **Realistic ATM Kiosk UI** — visual card reader, secure keypad, cash dispenser, receipt printer, status LEDs, and BITHM bank branding.
-- 💳 **Interactive Card Journey** — choose a demo card, animate insertion, authenticate with a four-digit PIN, and eject the card at the end of the session.
+- 💳 **Interactive Card Journey** — choose a demo card, animate insertion, authenticate with a four-digit PIN, select an account, and eject the card at the end of the session.
 - 🔐 **Secure PIN Handling** — keypad input, clear button, confirmation, warning sound, and three-attempt lockout behaviour.
 - 💸 **Customer Transactions** — balance inquiry, cash withdrawal, cash deposit, fund transfer, and mini statement.
 - 💵 **Physical Cash Simulation** — note counting, shutter opening, amount-aware note stack, and cash collection flow.
@@ -130,7 +130,7 @@ ATMTechnician ── performs ──> ServiceActivity
 
 <a id="demo-accounts"></a>
 
-Choose a card from the simulator welcome screen, then use the associated PIN.
+Choose a card from the simulator welcome screen, enter the associated PIN, then select the account to use for the session.
 
 | Customer | Card number | PIN | Available accounts |
 | :--- | :--- | :---: | :--- |
@@ -144,7 +144,7 @@ Technician access is available from the welcome screen. The configured demo tech
 ## 🧭 ATM Transaction Flow
 
 ```text
-Choose demo card → Insert card → Enter PIN → Select transaction
+Choose demo card → Insert card → Enter PIN → Select account → Select transaction
 → Process transaction → Collect cash / confirm deposit
 → Optional receipt → Take card
 ```

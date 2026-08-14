@@ -1,0 +1,3 @@
+# Keep repository text files consistent across Windows and Unix environments.
+*.java text eol=lf
+*.md text eol=lf
