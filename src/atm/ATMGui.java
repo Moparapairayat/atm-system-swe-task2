@@ -199,6 +199,8 @@ public class ATMGui {
         p.add(action("INSERT CARD", BLUE, e -> showPage("cardSelection")));
         p.add(Box.createVerticalStrut(12));
         p.add(action("TECHNICIAN ACCESS", new Color(83, 91, 98), e -> showPage("technician")));
+        p.add(Box.createVerticalGlue());
+        p.add(label("Student Developer  •  Mopara Pair Ayat", 10, new Color(88, 112, 125), SwingConstants.CENTER));
         return p;
     }
 
