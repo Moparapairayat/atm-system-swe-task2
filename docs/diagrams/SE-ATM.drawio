@@ -1,0 +1,780 @@
+<mxfile host="app.diagrams.net" modified="2026-07-30T06:22:00.000Z" agent="Mozilla/5.0" version="22.1.16" type="device">
+  
+  <!-- ==================== PAGE 1: CLASS DIAGRAM ==================== -->
+  <diagram name="1. Class Diagram" id="class-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title1" value="ATM System - Class Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1320" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Bank Class -->
+        <mxCell id="c_bank" value="Bank" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="60" y="90" width="260" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="c_bank_attr" value="- bankId : String&#xa;- bankName : String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_bank">
+          <mxGeometry y="30" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c_bank_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#6c8ebf;html=1;" vertex="1" parent="c_bank">
+          <mxGeometry y="70" width="260" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_bank_meth" value="+ verifyCredentials(cardNo, pin) : bool&#xa;+ processTransaction(tx) : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_bank">
+          <mxGeometry y="78" width="260" height="52" as="geometry" />
+        </mxCell>
+
+        <!-- Customer Class -->
+        <mxCell id="c_cust" value="Customer" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="420" y="90" width="240" height="145" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cust_attr" value="- customerId : String&#xa;- name : String&#xa;- cardNumber : String&#xa;- pin : String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_cust">
+          <mxGeometry y="30" width="240" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cust_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#82b366;html=1;" vertex="1" parent="c_cust">
+          <mxGeometry y="90" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cust_meth" value="+ insertCard()&#xa;+ enterPIN(pin) : bool&#xa;+ selectTransaction()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_cust">
+          <mxGeometry y="98" width="240" height="47" as="geometry" />
+        </mxCell>
+
+        <!-- ATM Class -->
+        <mxCell id="c_atm" value="ATM" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="780" y="90" width="280" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="c_atm_attr" value="- atmId : String&#xa;- currentCashBalance : double&#xa;- paperLevel : int&#xa;- inkLevel : int" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_atm">
+          <mxGeometry y="30" width="280" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="c_atm_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#d79b00;html=1;" vertex="1" parent="c_atm">
+          <mxGeometry y="90" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_atm_meth" value="+ authenticateUser(cardNo, pin) : bool&#xa;+ executeTransaction(tx) : bool&#xa;+ replenishCash(amount)&#xa;+ runDiagnostics() : String" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_atm">
+          <mxGeometry y="98" width="280" height="62" as="geometry" />
+        </mxCell>
+
+        <!-- ATM Components (Composition with ATM) -->
+        <mxCell id="c_cardreader" value="CardReader" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="640" y="320" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cardreader_attr" value="- isCardInserted : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_cardreader">
+          <mxGeometry y="26" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cardreader_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#b85450;html=1;" vertex="1" parent="c_cardreader">
+          <mxGeometry y="56" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cardreader_meth" value="+ readCardData() : Card&#xa;+ ejectCard()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_cardreader">
+          <mxGeometry y="64" width="200" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c_cashdispenser" value="CashDispenser" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="870" y="320" width="200" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cashdispenser_attr" value="- cashAvailable : double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_cashdispenser">
+          <mxGeometry y="26" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cashdispenser_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#b85450;html=1;" vertex="1" parent="c_cashdispenser">
+          <mxGeometry y="56" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_cashdispenser_meth" value="+ dispenseCash(amt) : bool&#xa;+ verifyCash() : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_cashdispenser">
+          <mxGeometry y="64" width="200" height="36" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c_printer" value="Printer" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="320" width="180" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="c_printer_attr" value="- paperStatus : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_printer">
+          <mxGeometry y="26" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="c_printer_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#b85450;html=1;" vertex="1" parent="c_printer">
+          <mxGeometry y="56" width="180" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_printer_meth" value="+ printReceipt(tx)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_printer">
+          <mxGeometry y="64" width="180" height="36" as="geometry" />
+        </mxCell>
+
+        <!-- Account Hierarchy (Abstract & Inheritance) -->
+        <mxCell id="c_account" value="&lt;i&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/i&gt;&#xa;Account" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=34;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="220" y="470" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="c_account_attr" value="- accountNumber : String&#xa;- balance : double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_account">
+          <mxGeometry y="34" width="240" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="c_account_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#9673a6;html=1;" vertex="1" parent="c_account">
+          <mxGeometry y="74" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_account_meth" value="+ getBalance() : double&#xa;+ credit(amt)&#xa;+ debit(amt) : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_account">
+          <mxGeometry y="82" width="240" height="48" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c_savings" value="SavingsAccount" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="110" y="670" width="200" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="c_savings_attr" value="- interestRate : double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_savings">
+          <mxGeometry y="26" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="c_savings_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#9673a6;html=1;" vertex="1" parent="c_savings">
+          <mxGeometry y="51" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_savings_meth" value="+ calculateInterest() : double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_savings">
+          <mxGeometry y="59" width="200" height="26" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c_current" value="CurrentAccount" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="340" y="670" width="200" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="c_current_attr" value="- overdraftLimit : double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_current">
+          <mxGeometry y="26" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="c_current_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#9673a6;html=1;" vertex="1" parent="c_current">
+          <mxGeometry y="51" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_current_meth" value="+ checkOverdraft() : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_current">
+          <mxGeometry y="59" width="200" height="26" as="geometry" />
+        </mxCell>
+
+        <!-- Transaction Hierarchy (Abstract & Inheritance) -->
+        <mxCell id="c_tx" value="&lt;i&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/i&gt;&#xa;Transaction" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=34;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="470" width="240" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="c_tx_attr" value="- transactionId : String&#xa;- timestamp : Date&#xa;- amount : double" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_tx">
+          <mxGeometry y="34" width="240" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="c_tx_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#d6b656;html=1;" vertex="1" parent="c_tx">
+          <mxGeometry y="84" width="240" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_tx_meth" value="+ execute() : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=12;" vertex="1" parent="c_tx">
+          <mxGeometry y="92" width="240" height="38" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c_withdrawal" value="Withdrawal" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="640" y="670" width="180" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="c_withdrawal_attr" value="" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_withdrawal">
+          <mxGeometry y="26" width="180" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="c_withdrawal_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#d6b656;html=1;" vertex="1" parent="c_withdrawal">
+          <mxGeometry y="36" width="180" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_withdrawal_meth" value="+ execute() : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_withdrawal">
+          <mxGeometry y="44" width="180" height="31" as="geometry" />
+        </mxCell>
+
+        <mxCell id="c_deposit" value="Deposit" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="860" y="670" width="180" height="75" as="geometry" />
+        </mxCell>
+        <mxCell id="c_deposit_attr" value="" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_deposit">
+          <mxGeometry y="26" width="180" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="c_deposit_sep" value="" style="line;strokeWidth=1;fillColor=none;spacingLeft=3;spacingRight=3;rotatable=0;points=[];strokeColor=#d6b656;html=1;" vertex="1" parent="c_deposit">
+          <mxGeometry y="36" width="180" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="c_deposit_meth" value="+ execute() : bool" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=8;spacingRight=8;rotatable=0;points=[];portConstraint=eastwest;html=1;fontSize=11;" vertex="1" parent="c_deposit">
+          <mxGeometry y="44" width="180" height="31" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships -->
+        <!-- Customer 1 -- 1..* Account -->
+        <mxCell id="rel_cust_acc" value="owns&#xa;1           1..*" style="endArrow=none;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_cust" target="c_account">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <!-- Bank 1 -- 1..* Account -->
+        <mxCell id="rel_bank_acc" value="manages&#xa;1         1..*" style="endArrow=none;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_bank" target="c_account">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <!-- Bank 1 -- 1..* ATM -->
+        <mxCell id="rel_bank_atm" value="operates&#xa;1                      1..*" style="endArrow=none;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_bank" target="c_atm">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <!-- ATM Composition with Components -->
+        <mxCell id="rel_atm_card" value="" style="endArrow=diamond;endFill=1;html=1;rounded=0;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_atm" target="c_cardreader">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_atm_disp" value="" style="endArrow=diamond;endFill=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_atm" target="c_cashdispenser">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rel_atm_prn" value="" style="endArrow=diamond;endFill=1;html=1;rounded=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_atm" target="c_printer">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <!-- Inheritances -->
+        <mxCell id="inh_savings" value="" style="endArrow=block;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_savings" target="c_account">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inh_current" value="" style="endArrow=block;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_current" target="c_account">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inh_withdrawal" value="" style="endArrow=block;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_withdrawal" target="c_tx">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="inh_deposit" value="" style="endArrow=block;endFill=0;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="c_deposit" target="c_tx">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 2: USE CASE DIAGRAM ==================== -->
+  <diagram name="2. Use Case Diagram" id="usecase-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title2" value="ATM System - Use Case Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- System Boundary -->
+        <mxCell id="sys_boundary" value="🏧 ATM System Boundary" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#94a3b8;fontStyle=1;fontSize=16;startSize=40;" vertex="1" parent="1">
+          <mxGeometry x="320" y="80" width="600" height="820" as="geometry" />
+        </mxCell>
+
+        <!-- Use Cases inside boundary -->
+        <mxCell id="uc_auth" value="Insert Card &amp; Validate PIN" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="60" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_balance" value="Check Account Balance" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="140" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_withdraw" value="Withdraw Cash" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="220" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_deposit" value="Deposit Cash / Check" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="300" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_transfer" value="Transfer Funds" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="380" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_receipt" value="Print Transaction Receipt" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="360" y="470" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_eject" value="Eject Card" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="50" y="470" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_refill_cash" value="Replenish Cash Cassette" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="570" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_refill_paper" value="Refill Paper &amp; Ink Supplies" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="650" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uc_diagnostics" value="Perform System Diagnostics" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1;" vertex="1" parent="sys_boundary">
+          <mxGeometry x="190" y="730" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Includes -->
+        <mxCell id="inc_receipt" value="«include»" style="endArrow=open;endSize=12;dashed=1;html=1;exitX=0.8;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="sys_boundary" source="uc_withdraw" target="uc_receipt">
+          <mxGeometry width="160" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Actors -->
+        <mxCell id="actor_customer" value="Customer" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=14;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="140" y="320" width="60" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="actor_bank" value="Core Bank System" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=14;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="240" width="60" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="actor_tech" value="ATM Technician" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontSize=14;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="680" width="60" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Customer Connections -->
+        <mxCell id="edge_c_auth" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_customer" target="uc_auth">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_c_bal" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_customer" target="uc_balance">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_c_with" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_customer" target="uc_withdraw">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_c_dep" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_customer" target="uc_deposit">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Bank Connections -->
+        <mxCell id="edge_b_auth" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_bank" target="uc_auth">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_b_with" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_bank" target="uc_withdraw">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Tech Connections -->
+        <mxCell id="edge_t_cash" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_tech" target="uc_refill_cash">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_t_diag" style="endArrow=none;html=1;" edge="1" parent="1" source="actor_tech" target="uc_diagnostics">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 3: CASH WITHDRAWAL SEQUENCE DIAGRAM ==================== -->
+  <diagram name="3. Cash Withdrawal Sequence" id="sequence-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title3" value="ATM System - Cash Withdrawal Sequence Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1320" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Lifelines -->
+        <mxCell id="life_cust" value="Customer" style="shape=umlLifeline;participant=umlActor;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;fillColor=#d5e8d4;strokeColor=#82b366;size=40;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="60" height="800" as="geometry" />
+        </mxCell>
+
+        <mxCell id="life_card" value="CardReader" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;fillColor=#f8cecc;strokeColor=#b85450;size=40;" vertex="1" parent="1">
+          <mxGeometry x="280" y="80" width="120" height="800" as="geometry" />
+        </mxCell>
+
+        <mxCell id="life_ui" value="ATM UI Screen" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;fillColor=#fff2cc;strokeColor=#d6b656;size=40;" vertex="1" parent="1">
+          <mxGeometry x="500" y="80" width="120" height="800" as="geometry" />
+        </mxCell>
+
+        <mxCell id="life_ctrl" value="ATM Controller" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;fillColor=#ffe6cc;strokeColor=#d79b00;size=40;" vertex="1" parent="1">
+          <mxGeometry x="720" y="80" width="120" height="800" as="geometry" />
+        </mxCell>
+
+        <mxCell id="life_bank" value="Core Bank Server" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;fillColor=#dae8fc;strokeColor=#6c8ebf;size=40;" vertex="1" parent="1">
+          <mxGeometry x="940" y="80" width="140" height="800" as="geometry" />
+        </mxCell>
+
+        <mxCell id="life_disp" value="Cash Dispenser" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;html=1;container=1;collapsible=0;recursiveResize=0;fillColor=#e1d5e7;strokeColor=#9673a6;size=40;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="80" width="120" height="800" as="geometry" />
+        </mxCell>
+
+        <!-- Call Arrows -->
+        <mxCell id="sq_1" value="1. Insert ATM Card" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="160" as="sourcePoint" />
+            <mxPoint x="340" y="160" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_2" value="2. Card Inserted Event (CardData)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="210" as="sourcePoint" />
+            <mxPoint x="780" y="210" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_3" value="3. Prompt PIN Entry" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="260" as="sourcePoint" />
+            <mxPoint x="560" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_4" value="4. Enter PIN &amp; Select $100 Withdrawal" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="110" y="320" as="sourcePoint" />
+            <mxPoint x="560" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_5" value="5. Forward Tx Req (CardNo, PIN, $100)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="560" y="370" as="sourcePoint" />
+            <mxPoint x="780" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_6" value="6. Authorize &amp; Debit ($100)" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="430" as="sourcePoint" />
+            <mxPoint x="1010" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_7" value="7. Approval Confirmed (TxID)" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1010" y="490" as="sourcePoint" />
+            <mxPoint x="780" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_8" value="8. Command Dispense $100" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="550" as="sourcePoint" />
+            <mxPoint x="1240" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_9" value="9. Deliver $100 Cash" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1240" y="610" as="sourcePoint" />
+            <mxPoint x="110" y="610" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_10" value="10. Eject Card" style="html=1;verticalAlign=bottom;endArrow=block;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="780" y="670" as="sourcePoint" />
+            <mxPoint x="340" y="670" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="sq_11" value="11. Return Card to Customer" style="html=1;verticalAlign=bottom;endArrow=open;dashed=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="340" y="730" as="sourcePoint" />
+            <mxPoint x="110" y="730" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 4: STATE MACHINE DIAGRAM ==================== -->
+  <diagram name="4. State Machine Diagram" id="state-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title4" value="ATM System - State Machine Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Initial Node -->
+        <mxCell id="st_init" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="30" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- States -->
+        <mxCell id="st_off" value="Off" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="160" y="125" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_selftest" value="SelfTest &amp; Boot" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="360" y="125" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_idle" value="Idle&#xa;(Waiting for Card)" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="600" y="125" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_pin" value="PIN Verification" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="600" y="270" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_menu" value="Transaction Menu" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="600" y="410" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_proc" value="Processing Transaction" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="600" y="550" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_disp" value="Dispensing Cash" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="600" y="690" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_eject" value="Ejecting Card" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="320" y="690" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_maint" value="Maintenance Mode" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="900" y="270" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="st_out" value="Out of Service" style="rounded=1;whiteSpace=wrap;html=1;fontSize=14;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="900" y="125" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Transitions -->
+        <mxCell id="tr1" value="Power On" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="st_init" target="st_off">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr2" value="Boot" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="st_off" target="st_selftest">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr3" value="OK" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="st_selftest" target="st_idle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr4" value="Fault" style="endArrow=classic;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="st_selftest" target="st_out">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr5" value="Insert Card" style="endArrow=classic;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="st_idle" target="st_pin">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr6" value="Valid PIN" style="endArrow=classic;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="st_pin" target="st_menu">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr7" value="Select Withdrawal" style="endArrow=classic;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="st_menu" target="st_proc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr8" value="Approved" style="endArrow=classic;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="st_proc" target="st_disp">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr9" value="Cash Delivered" style="endArrow=classic;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="st_disp" target="st_eject">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tr10" value="Card Removed" style="endArrow=classic;html=1;exitX=0.5;exitY=0;entryX=0;entryY=0.75;" edge="1" parent="1" source="st_eject" target="st_idle">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 5: ACTIVITY FLOWCHART ==================== -->
+  <diagram name="5. Activity Flowchart" id="activity-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title5" value="ATM System - Cash Withdrawal Activity Flowchart" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Start Node -->
+        <mxCell id="act_start" value="" style="ellipse;html=1;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="600" y="90" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Activities -->
+        <mxCell id="act_insert" value="Insert ATM Card" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="540" y="170" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_pin_dec" value="Is PIN Valid?" style="rhombus;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="540" y="260" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_pin_err" value="Display PIN Error &amp;&#xa;Eject Card" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="280" y="275" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_amt" value="Enter Desired Amount" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="540" y="380" width="160" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_cash_dec" value="ATM Has Enough Cash?" style="rhombus;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="530" y="470" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_bank_dec" value="Bank Authorizes?" style="rhombus;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="540" y="590" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_dispense" value="Dispense Cash Notes &amp;&#xa;Print Receipt" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="530" y="710" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_eject" value="Eject Card &amp; Return to User" style="rounded=1;whiteSpace=wrap;html=1;fontSize=13;fontStyle=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="530" y="800" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- End Node -->
+        <mxCell id="act_end" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="1">
+          <mxGeometry x="600" y="890" width="40" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Flow Connections -->
+        <mxCell id="af1" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_start" target="act_insert">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af2" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_insert" target="act_pin_dec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af3" value="No" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_pin_dec" target="act_pin_err">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af4" value="Yes" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_pin_dec" target="act_amt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af5" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_amt" target="act_cash_dec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af6" value="Yes" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_cash_dec" target="act_bank_dec">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af7" value="Approved" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_bank_dec" target="act_dispense">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af8" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_dispense" target="act_eject">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af9" style="endArrow=classic;html=1;" edge="1" parent="1" source="act_eject" target="act_end">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="af10" style="endArrow=classic;html=1;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="act_pin_err" target="act_end">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="180" y="300" />
+              <mxPoint x="180" y="910" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 6: COMPONENT DIAGRAM ==================== -->
+  <diagram name="6. Component Diagram" id="component-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title6" value="ATM System - Component Diagram" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ATM Client Application Box -->
+        <mxCell id="sub_app" value="💻 ATM Client Application" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="80" y="90" width="580" height="740" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_ui" value="«component»&#xa;🖥️ UI View Manager" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;fontStyle=1;" vertex="1" parent="sub_app">
+          <mxGeometry x="50" y="70" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_ctrl" value="«component»&#xa;⚙️ Main ATM Controller" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=13;fontStyle=1;" vertex="1" parent="sub_app">
+          <mxGeometry x="310" y="70" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_hsm" value="«component»&#xa;🔒 HSM Crypto Engine" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;" vertex="1" parent="sub_app">
+          <mxGeometry x="310" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Hardware Drivers Subgraph -->
+        <mxCell id="sub_drv" value="Hardware Device Drivers" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f1f5f9;strokeColor=#cbd5e1;fontStyle=1;fontSize=14;" vertex="1" parent="sub_app">
+          <mxGeometry x="50" y="380" width="480" height="310" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_drv_card" value="CardReader Driver" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="sub_drv">
+          <mxGeometry x="140" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_drv_disp" value="Cash Dispenser Driver" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="sub_drv">
+          <mxGeometry x="140" y="135" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_drv_prn" value="Printer Driver" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="sub_drv">
+          <mxGeometry x="140" y="220" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Network & Bank Gateway Subgraph -->
+        <mxCell id="sub_net" value="🌐 External Infrastructure" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="740" y="90" width="480" height="740" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_gateway" value="«component»&#xa;ISO 8583 Gateway Switch" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1;" vertex="1" parent="sub_net">
+          <mxGeometry x="120" y="230" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="cmp_corebank" value="«component»&#xa;🏦 Core Banking System" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" vertex="1" parent="sub_net">
+          <mxGeometry x="120" y="470" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Connectors -->
+        <mxCell id="cp1" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" parent="1" source="cmp_ui" target="cmp_ctrl">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cp2" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" parent="1" source="cmp_ctrl" target="cmp_hsm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cp3" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" parent="1" source="cmp_hsm" target="cmp_gateway">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="cp4" style="endArrow=open;endSize=12;dashed=1;html=1;" edge="1" parent="1" source="cmp_gateway" target="cmp_corebank">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <!-- ==================== PAGE 7: DEPLOYMENT ARCHITECTURE ==================== -->
+  <diagram name="7. Deployment Architecture" id="deployment-diagram-native">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title7" value="ATM System - Deployment Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#1E293B;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1220" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: ATM Physical Machine -->
+        <mxCell id="node_atm" value="🏧 ATM Physical Terminal Node&#xa;[Embedded Windows IoT / Linux]" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;fontSize=14;fontStyle=1;fillColor=#ffe6cc;strokeColor=#d79b00;align=center;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="380" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="app_exec" value="«artifact»&#xa;ATM_Executable.exe" style="component;align=left;spacingLeft=36;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="120" y="200" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="app_xfs" value="«component»&#xa;Hardware XFS Middleware" style="shape=module;align=left;spacingLeft=15;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="120" y="320" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="hw_safe" value="«device»&#xa;Cash Cassette Safe &amp; Dispenser" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="470" width="300" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="hw_emv" value="«device»&#xa;EMV Chip Card Reader Slot" style="whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="560" width="300" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Network Router -->
+        <mxCell id="node_router" value="🔒 Private VPN Router Node" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;fontSize=14;fontStyle=1;fillColor=#f5f5f5;strokeColor=#666666;align=center;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="540" y="320" width="220" height="260" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Bank Data Center -->
+        <mxCell id="node_dc" value="🏦 Central Bank Data Center Node" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;fontSize=14;fontStyle=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="840" y="100" width="380" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="srv_switch" value="«server»&#xa;ISO 8583 Gateway Switch Server" style="whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="200" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="srv_hsm" value="«hardware»&#xa;Hardware Security Module (HSM)" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="340" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="srv_db" value="«database»&#xa;Core Account DB Cluster" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="930" y="500" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="dep1" value="Encrypted TCP/IP" style="endArrow=none;html=1;strokeWidth=2;" edge="1" parent="1" source="node_atm" target="node_router">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="dep2" value="IPSec Leased VPN Line" style="endArrow=none;html=1;strokeWidth=2;" edge="1" parent="1" source="node_router" target="node_dc">
+          <mxGeometry width="50" height="50" relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
