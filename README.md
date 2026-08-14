@@ -92,26 +92,64 @@ It is an academic software simulation. No physical bank hardware or live banking
 
 <a id="visual-evidence"></a>
 
-The table below presents step-by-step visual evidence of the **BITHM National Bank ATM Simulator** running in Java, covering card insertion, authentication, account navigation, transaction processing, cash dispensing, deposit intake, and mini statement generation.
+The gallery below presents step-by-step visual execution evidence of the **BITHM National Bank ATM Simulator** running in Java, featuring full-width high-resolution cards for card insertion, authentication, account navigation, transaction processing, cash dispensing, deposit intake, mini statement generation, technician maintenance, and build verification.
 
-<div align="center">
+<p align="center">
+  <img src="./docs/evidence/01-welcome-screen.png" width="49%" alt="01. Welcome Screen" />
+  <img src="./docs/evidence/02-card-selection-and-demo-pin.png" width="49%" alt="02. Card Selection & PIN Hint" />
+</p>
+<p align="center">
+  <b>01. Welcome Screen</b> — <i>ATM Kiosk interface, branding, and student developer info</i>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <b>02. Card Selection & PIN Hint</b> — <i>Demo customer cards with test PIN hints</i>
+</p>
+<br />
 
-| # | Capture Point | Screenshot Evidence | Description |
-| :-: | :--- | :---: | :--- |
-| **01** | **Welcome Screen** | <img src="./docs/evidence/01-welcome-screen.png" width="420" alt="Welcome Screen" /> | ATM Kiosk interface, branding, and student developer info. |
-| **02** | **Card Selection & PIN Hint** | <img src="./docs/evidence/02-card-selection-and-demo-pin.png" width="420" alt="Card Selection" /> | Interactive demo customer card selection with PIN hints. |
-| **03** | **PIN Verification** | <img src="./docs/evidence/03-pin-verification.png" width="420" alt="PIN Verification" /> | Secure keypad input screen with masked card display. |
-| **04** | **Account Selection** | <img src="./docs/evidence/04-account-selection.png" width="420" alt="Account Selection" /> | Savings and Current account selection menu. |
-| **05** | **Transaction Menu** | <img src="./docs/evidence/05-transaction-menu.png" width="420" alt="Transaction Menu" /> | Main customer ATM transaction service choices. |
-| **06** | **Cash Withdrawal** | <img src="./docs/evidence/06-cash-withdrawal.png" width="420" alt="Cash Withdrawal" /> | Cash dispenser note counting, shutter animation, and collection. |
-| **07** | **Deposit Flow** | <img src="./docs/evidence/07-deposit-flow.png" width="420" alt="Deposit Flow" /> | Deposit intake animation and account balance update. |
-| **08** | **Mini Statement** | <img src="./docs/evidence/08-mini-statement.png" width="420" alt="Mini Statement" /> | Account history, recent transactions, and balance summary. |
-| **09** | **Technician Console** | <img src="./docs/evidence/09-technician-console.png" width="420" alt="Technician Console" /> | ATM maintenance, cash replenishment, diagnostics, and repair. |
-| **10** | **Console Build Output** | <img src="./docs/evidence/10-console-build-output.png" width="420" alt="Console Build Output" /> | Successful Java compilation (`javac`) and application launch terminal output proof. |
+<p align="center">
+  <img src="./docs/evidence/03-pin-verification.png" width="49%" alt="03. PIN Verification" />
+  <img src="./docs/evidence/04-account-selection.png" width="49%" alt="04. Account Selection" />
+</p>
+<p align="center">
+  <b>03. PIN Verification</b> — <i>Keypad input screen with masked card display</i>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <b>04. Account Selection</b> — <i>Savings and Current account selection menu</i>
+</p>
+<br />
+
+<p align="center">
+  <img src="./docs/evidence/05-transaction-menu.png" width="49%" alt="05. Transaction Menu" />
+  <img src="./docs/evidence/06-cash-withdrawal.png" width="49%" alt="06. Cash Withdrawal" />
+</p>
+<p align="center">
+  <b>05. Transaction Menu</b> — <i>Main customer ATM transaction service choices</i>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <b>06. Cash Withdrawal</b> — <i>Cash dispenser note counting and collection flow</i>
+</p>
+<br />
+
+<p align="center">
+  <img src="./docs/evidence/07-deposit-flow.png" width="49%" alt="07. Deposit Flow" />
+  <img src="./docs/evidence/08-mini-statement.png" width="49%" alt="08. Mini Statement" />
+</p>
+<p align="center">
+  <b>07. Deposit Flow</b> — <i>Deposit intake animation and balance update</i>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <b>08. Mini Statement</b> — <i>Account history, transactions, and balance summary</i>
+</p>
+<br />
+
+<p align="center">
+  <img src="./docs/evidence/09-technician-console.png" width="49%" alt="09. Technician Console" />
+  <img src="./docs/evidence/10-console-build-output.png" width="49%" alt="10. Console Build Output" />
+</p>
+<p align="center">
+  <b>09. Technician Console</b> — <i>Maintenance, cash replenishment, and repair</i>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <b>10. Console Build Output</b> — <i>Java compilation (`javac`) & launch terminal proof</i>
+</p>
+<br />
 
 > 📜 **Console Build & Compilation Text Record:** Complete terminal logs and compilation verification record can be inspected in [`docs/evidence/10-console-build-output.txt`](./docs/evidence/10-console-build-output.txt).
-
-</div>
 
 ---
 
