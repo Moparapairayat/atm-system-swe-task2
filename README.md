@@ -17,6 +17,8 @@
 
   <p align="center">
     <a href="#-features"><img src="https://img.shields.io/badge/Features-10B981?style=for-the-badge&labelColor=0D1117" alt="Features" /></a>
+    <a href="#-visual-evidence"><img src="https://img.shields.io/badge/Visual_Evidence-10_Screenshots-EC4899?style=for-the-badge&labelColor=0D1117" alt="Visual Evidence" /></a>
+    <a href="#-video-walkthrough"><img src="https://img.shields.io/badge/Video_Demo-YouTube_%26_Drive-FF0000?style=for-the-badge&labelColor=0D1117" alt="Video Demo" /></a>
     <a href="#-uml--oop-design"><img src="https://img.shields.io/badge/UML_%26_OOP-0EA5E9?style=for-the-badge&labelColor=0D1117" alt="UML and OOP" /></a>
     <a href="#-demo-accounts"><img src="https://img.shields.io/badge/Demo_Accounts-7C3AED?style=for-the-badge&labelColor=0D1117" alt="Demo accounts" /></a>
     <a href="#-getting-started"><img src="https://img.shields.io/badge/Getting_Started-F97316?style=for-the-badge&labelColor=0D1117" alt="Getting started" /></a>
@@ -83,6 +85,60 @@ It is an academic software simulation. No physical bank hardware or live banking
 - 🧾 **Receipt Simulation** — receipt choice, printer animation, and collection flow.
 - 🛠️ **Technician Console** — replenishment, upgrade, diagnostics, and repair actions using the maintenance class model.
 - 🔊 **Generated Sound Effects** — programmatic reader, keypad, cash-dispenser, receipt-printer, confirmation, and warning tones; no external audio files required.
+
+---
+
+## 📸 Visual Evidence & Application Showcase
+
+<a id="visual-evidence"></a>
+
+The table below presents step-by-step visual evidence of the **BITHM National Bank ATM Simulator** running in Java, covering card insertion, authentication, account navigation, transaction processing, cash dispensing, deposit intake, and mini statement generation.
+
+<div align="center">
+
+| # | Capture Point | Screenshot Evidence | Description |
+| :-: | :--- | :---: | :--- |
+| **01** | **Welcome Screen** | <img src="./docs/evidence/01-welcome-screen.png" width="420" alt="Welcome Screen" /> | ATM Kiosk interface, branding, and student developer info. |
+| **02** | **Card Selection & PIN Hint** | <img src="./docs/evidence/02-card-selection-and-demo-pin.png" width="420" alt="Card Selection" /> | Interactive demo customer card selection with PIN hints. |
+| **03** | **PIN Verification** | <img src="./docs/evidence/03-pin-verification.png" width="420" alt="PIN Verification" /> | Secure keypad input screen with masked card display. |
+| **04** | **Account Selection** | <img src="./docs/evidence/04-account-selection.png" width="420" alt="Account Selection" /> | Savings and Current account selection menu. |
+| **05** | **Transaction Menu** | <img src="./docs/evidence/05-transaction-menu.png" width="420" alt="Transaction Menu" /> | Main customer ATM transaction service choices. |
+| **06** | **Cash Withdrawal** | <img src="./docs/evidence/06-cash-withdrawal.png" width="420" alt="Cash Withdrawal" /> | Cash dispenser note counting, shutter animation, and collection. |
+| **07** | **Deposit Flow** | <img src="./docs/evidence/07-deposit-flow.png" width="420" alt="Deposit Flow" /> | Deposit intake animation and account balance update. |
+| **08** | **Mini Statement** | <img src="./docs/evidence/08-mini-statement.png" width="420" alt="Mini Statement" /> | Account history, recent transactions, and balance summary. |
+| **09** | **Technician Console** | <img src="./docs/evidence/09-technician-console.png" width="420" alt="Technician Console" /> | ATM maintenance, cash replenishment, diagnostics, and repair. |
+| **10** | **Console Build Output** | <img src="./docs/evidence/10-console-build-output.png" width="420" alt="Console Build Output" /> | Successful Java compilation (`javac`) and application launch terminal output proof. |
+
+> 📜 **Console Build & Compilation Text Record:** Complete terminal logs and compilation verification record can be inspected in [`docs/evidence/10-console-build-output.txt`](./docs/evidence/10-console-build-output.txt).
+
+</div>
+
+---
+
+## 🎥 Video Walkthrough & Interactive Demo
+
+<a id="video-walkthrough"></a>
+
+A full interactive video demonstration showcasing card insertion, PIN authentication, cash withdrawal animation, cash deposit intake, mini statement generation, programmatic audio effects, and the technician maintenance console.
+
+<div align="center">
+
+  <p align="center">
+    <a href="YOUR_YOUTUBE_LINK_HERE" target="_blank">
+      <img src="https://img.shields.io/badge/WATCH_DEMO-YouTube_HD-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=0D1117" alt="Watch Demo on YouTube" />
+    </a>
+    &nbsp;&nbsp;
+    <a href="YOUR_GOOGLE_DRIVE_LINK_HERE" target="_blank">
+      <img src="https://img.shields.io/badge/MIRROR-Google_Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white&labelColor=0D1117" alt="Download from Google Drive" />
+    </a>
+  </p>
+
+| 🎬 Streaming Platform | 🔗 Access Link | 📌 Description |
+| :--- | :--- | :--- |
+| **YouTube (HD Stream)** | [▶️ Watch Full ATM Simulator Demo](YOUR_YOUTUBE_LINK_HERE) | High-definition online video streaming. |
+| **Google Drive (Backup)** | [📁 Download / View MP4 File](YOUR_GOOGLE_DRIVE_LINK_HERE) | Direct cloud file download and mirror link. |
+
+</div>
 
 ---
 

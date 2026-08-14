@@ -1,0 +1,72 @@
+===============================================================================
+               BITHM NATIONAL BANK — ATM SIMULATOR
+              Console Build & Execution Proof Dossier
+===============================================================================
+
+[STUDENT & COURSE DOSSIER]
+Project Name        : BITHM National Bank ATM Simulator
+Student Name        : Mopara Pair Ayat
+Instructor Name     : Ziana Mehnaz Ruhee
+Institution         : BITHM College Of Professionals
+Qualification       : OTHM Level 5 in IT/CSE
+Subject / Module    : Software Engineering
+Task Reference      : Task 2, Part 1 (Activity c)
+
+-------------------------------------------------------------------------------
+[SYSTEM ENVIRONMENT]
+Date & Time Timestamp: 2026-08-14 14:57:37 +03:00
+Java Development Kit : OpenJDK 25.0.4 LTS (Temurin-25.0.4+7)
+Java Runtime Env     : OpenJDK Runtime Environment Temurin-25.0.4+7
+Java Virtual Machine : OpenJDK 64-Bit Server VM Temurin-25.0.4+7 (mixed mode)
+Operating System     : Microsoft Windows [Version 10.0.26100.3476]
+Repository Location  : d:\ATM_Application_SE
+
+-------------------------------------------------------------------------------
+[STEP 1: JAVA COMPILATION TEST]
+Repository Path: d:\ATM_Application_SE
+Command Executed:
+> javac -d bin src/atm/*.java
+
+Compilation Summary:
+- Input Source Files  : src/atm/*.java (19 Java source files compiled)
+  ├── Main.java
+  ├── ATMGui.java
+  ├── SoundEffects.java
+  ├── ATM.java
+  ├── Bank.java
+  ├── Transaction.java
+  ├── Withdrawal.java
+  ├── Deposit.java
+  ├── Transfer.java
+  ├── BalanceInquiry.java
+  ├── Card.java
+  ├── Customer.java
+  ├── Account.java
+  ├── ATMTechnician.java
+  ├── ServiceActivity.java
+  ├── Maintenance.java
+  ├── Replenishment.java
+  ├── Upgrade.java
+  ├── Diagnostic.java
+  └── Repair.java
+- Target Directory   : bin/atm/
+- Compilation Result : SUCCESS
+- Process Exit Code  : 0 (No syntax, type, or package errors)
+
+-------------------------------------------------------------------------------
+[STEP 2: APPLICATION EXECUTION TEST]
+Repository Path: d:\ATM_Application_SE
+Command Executed:
+> java -cp bin atm.Main
+
+Runtime Execution Summary:
+- Application Entry Point : atm.Main.main(String[] args)
+- UI Presentation Framework: Java Swing / AWT (ATMGui)
+- Audio Sound Engine      : Programmatic Synthesized Audio (SoundEffects)
+- Seeded Demo Data Loaded :
+  ├── Customer 1: Ziana Mehnaz Ruhee (Card: 1111-2222-3333-4444, Accounts: ACC-1001, ACC-1002)
+  └── Customer 2: Mopara Pair Ayat (Card: 5555-6666-7777-8888, Account: ACC-2001)
+- Demo Technician Loaded  : Mopara Pair Ayat (PIN: 9999)
+- Application Window      : Launched & Interactively Active
+- Process Status          : RUNNING CLEANLY (Exit Code 0 on closure)
+===============================================================================
