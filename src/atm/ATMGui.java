@@ -35,7 +35,7 @@ import javax.swing.SwingConstants;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
-/** Complete visual ATM kiosk interface with FDK buttons, Note Breakdown, and PIN toggle. */
+/** Complete visual ATM kiosk interface with 100% vector-rendered buttons and zero tofu boxes. */
 public class ATMGui {
     private static final Color SCREEN = new Color(232, 243, 246);
     private static final Color BLUE = new Color(20, 103, 166);
@@ -138,7 +138,7 @@ public class ATMGui {
                 new EmptyBorder(16, 24, 16, 24)));
         addPages();
 
-        // Feature 5: Wrap screen in FDK side buttons housing
+        // Feature 5: Tactile Vector FDK buttons housing around screen
         machine.add(fdkScreenHousing(), BorderLayout.CENTER);
 
         machine.add(keypad(), BorderLayout.EAST);
@@ -146,7 +146,7 @@ public class ATMGui {
         return machine;
     }
 
-    /** Feature 5: Hardware Screen Bezel with 8 Tactile FDK Side Buttons (4 Left, 4 Right). */
+    /** Feature 5: Hardware Screen Bezel with 8 Vector-Painted Tactile FDK Side Buttons (4 Left, 4 Right). */
     private JPanel fdkScreenHousing() {
         JPanel container = new JPanel(new BorderLayout(8, 0));
         container.setOpaque(false);
@@ -158,9 +158,7 @@ public class ATMGui {
         leftFdk.add(Box.createVerticalGlue());
         for (int i = 1; i <= 4; i++) {
             final int index = i;
-            JButton fdk = createFdkButton("▶", "FDK " + i);
-            fdk.addActionListener(e -> handleFdkClick(index));
-            leftFdk.add(fdk);
+            leftFdk.add(new FdkHardwareButton(true, "FDK " + i, e -> handleFdkClick(index)));
             if (i < 4) leftFdk.add(Box.createVerticalStrut(36));
         }
         leftFdk.add(Box.createVerticalGlue());
@@ -172,9 +170,7 @@ public class ATMGui {
         rightFdk.add(Box.createVerticalGlue());
         for (int i = 5; i <= 8; i++) {
             final int index = i;
-            JButton fdk = createFdkButton("◀", "FDK " + i);
-            fdk.addActionListener(e -> handleFdkClick(index));
-            rightFdk.add(fdk);
+            rightFdk.add(new FdkHardwareButton(false, "FDK " + i, e -> handleFdkClick(index)));
             if (i < 8) rightFdk.add(Box.createVerticalStrut(36));
         }
         rightFdk.add(Box.createVerticalGlue());
@@ -183,23 +179,6 @@ public class ATMGui {
         container.add(screen, BorderLayout.CENTER);
         container.add(rightFdk, BorderLayout.EAST);
         return container;
-    }
-
-    private JButton createFdkButton(String arrow, String tooltip) {
-        JButton b = new JButton(arrow);
-        b.setFont(new Font("Segoe UI", Font.BOLD, 12));
-        b.setForeground(new Color(220, 235, 245));
-        b.setBackground(new Color(55, 66, 74));
-        b.setFocusPainted(false);
-        b.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        b.setToolTipText("Tactile Screen Key (" + tooltip + ")");
-        b.setPreferredSize(new Dimension(46, 38));
-        b.setMaximumSize(new Dimension(46, 38));
-        b.setAlignmentX(Component.CENTER_ALIGNMENT);
-        b.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(110, 125, 135), 2),
-                new EmptyBorder(4, 4, 4, 4)));
-        return b;
     }
 
     private void handleFdkClick(int fdkIndex) {
@@ -227,7 +206,7 @@ public class ATMGui {
         JLabel brand = new JLabel("BITHM NATIONAL BANK");
         brand.setForeground(Color.WHITE);
         brand.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        JLabel branch = new JLabel("•  CHATTOGRAM TERMINAL 001");
+        JLabel branch = new JLabel("|  CHATTOGRAM TERMINAL 001");
         branch.setForeground(new Color(160, 205, 235));
         branch.setFont(new Font("Segoe UI", Font.BOLD, 11));
         left.add(brand);
@@ -250,7 +229,7 @@ public class ATMGui {
 
     private JPanel hardwareBay(String name, Color light, PortAnimation port, int width) {
         JPanel p = column(); p.setBackground(new Color(24, 29, 33)); p.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(105, 118, 123)), new EmptyBorder(5, 12, 7, 12)));
-        p.add(label(name + "   ●", 9, light, SwingConstants.CENTER));
+        p.add(label(name + "  [READY]", 9, light, SwingConstants.CENTER));
         int portHeight = name.startsWith("CASH") ? 110 : 120;
         port.setPreferredSize(new Dimension(width, portHeight)); port.setMaximumSize(new Dimension(width, portHeight)); port.setAlignmentX(Component.CENTER_ALIGNMENT); p.add(port); return p;
     }
@@ -263,7 +242,7 @@ public class ATMGui {
         brand.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(brand);
         left.add(Box.createVerticalStrut(8));
-        JLabel light = label("●  CONTACTLESS READY", 10, new Color(91, 221, 144), SwingConstants.CENTER);
+        JLabel light = label("[CONTACTLESS READY]", 10, new Color(91, 221, 144), SwingConstants.CENTER);
         light.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(light);
         left.add(Box.createVerticalGlue());
@@ -291,7 +270,7 @@ public class ATMGui {
         holder.add(Box.createVerticalStrut(12));
         holder.add(p);
         holder.add(Box.createVerticalGlue());
-        holder.add(label("●  HELP / ACCESSIBILITY", 9, new Color(183, 195, 202), SwingConstants.CENTER));
+        holder.add(label("HELP / ACCESSIBILITY", 9, new Color(183, 195, 202), SwingConstants.CENTER));
         return holder;
     }
 
@@ -345,7 +324,7 @@ public class ATMGui {
         p.add(emblemPanel);
 
         p.add(Box.createVerticalStrut(4));
-        JLabel tagline = new JLabel("24/7 Smart ATM & Digital Banking Kiosk  •  Chattogram Terminal 001", SwingConstants.CENTER);
+        JLabel tagline = new JLabel("24/7 Smart ATM & Digital Banking Kiosk  |  Chattogram Terminal 001", SwingConstants.CENTER);
         tagline.setFont(new Font("Segoe UI", Font.BOLD, 12));
         tagline.setForeground(new Color(88, 112, 125));
         tagline.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -354,7 +333,7 @@ public class ATMGui {
         p.add(Box.createVerticalStrut(6));
         JPanel statusPill = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 2));
         statusPill.setOpaque(false);
-        JLabel statusDot = new JLabel("●  ATM ONLINE   •   DISPENSER READY   •   EMV CHIP SECURED");
+        JLabel statusDot = new JLabel("ATM ONLINE  |  DISPENSER READY  |  EMV CHIP SECURED");
         statusDot.setFont(new Font("Segoe UI", Font.BOLD, 10));
         statusDot.setForeground(new Color(12, 138, 98));
         statusPill.add(statusDot);
@@ -408,14 +387,14 @@ public class ATMGui {
         p.add(logosBar);
 
         p.add(Box.createVerticalStrut(8));
-        JLabel securityNote = new JLabel("●  Protected with 256-Bit SSL & EMV Hardware Security", SwingConstants.CENTER);
+        JLabel securityNote = new JLabel("Protected with 256-Bit SSL & EMV Hardware Security", SwingConstants.CENTER);
         securityNote.setFont(new Font("Segoe UI", Font.BOLD, 10));
         securityNote.setForeground(new Color(90, 110, 120));
         securityNote.setAlignmentX(Component.CENTER_ALIGNMENT);
         p.add(securityNote);
 
         p.add(Box.createVerticalGlue());
-        JLabel devCredit = new JLabel("BITHM College Of Professionals  •  Student Developer: Mopara Pair Ayat", SwingConstants.CENTER);
+        JLabel devCredit = new JLabel("BITHM College Of Professionals  |  Student Developer: Mopara Pair Ayat", SwingConstants.CENTER);
         devCredit.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         devCredit.setForeground(new Color(120, 138, 148));
         devCredit.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -439,7 +418,7 @@ public class ATMGui {
         card1Wrapper.setOpaque(false);
         card1Wrapper.add(new VisualDebitCard(customers[0], "BLUE", "1234", "08/29", "PLATINUM DEBIT", () -> beginCardInsertion(customers[0])));
         card1Wrapper.add(Box.createVerticalStrut(8));
-        JLabel pinLabel1 = new JLabel("DEMO PIN: 1234  •  CLICK CARD TO INSERT", SwingConstants.CENTER);
+        JLabel pinLabel1 = new JLabel("DEMO PIN: 1234  |  CLICK CARD TO INSERT", SwingConstants.CENTER);
         pinLabel1.setFont(new Font("Segoe UI", Font.BOLD, 10));
         pinLabel1.setForeground(BLUE);
         pinLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -451,7 +430,7 @@ public class ATMGui {
         card2Wrapper.setOpaque(false);
         card2Wrapper.add(new VisualDebitCard(customers[1], "GOLD", "4321", "12/30", "GOLD VIP DEBIT", () -> beginCardInsertion(customers[1])));
         card2Wrapper.add(Box.createVerticalStrut(8));
-        JLabel pinLabel2 = new JLabel("DEMO PIN: 4321  •  CLICK CARD TO INSERT", SwingConstants.CENTER);
+        JLabel pinLabel2 = new JLabel("DEMO PIN: 4321  |  CLICK CARD TO INSERT", SwingConstants.CENTER);
         pinLabel2.setFont(new Font("Segoe UI", Font.BOLD, 10));
         pinLabel2.setForeground(new Color(175, 120, 20));
         pinLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -526,7 +505,7 @@ public class ATMGui {
                 toggleEyeBtn.setText("HIDE PIN");
                 toggleEyeBtn.setForeground(new Color(180, 50, 40));
             } else {
-                pin.setEchoChar('\u2022');
+                pin.setEchoChar('*');
                 toggleEyeBtn.setText("SHOW PIN");
                 toggleEyeBtn.setForeground(BLUE);
             }
@@ -546,7 +525,7 @@ public class ATMGui {
 
         JPanel actBox = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
         actBox.setOpaque(false);
-        JButton continueBtn = action("SUBMIT PIN  •  ENTER", BLUE, e -> authenticatePending(new String(pin.getPassword())));
+        JButton continueBtn = action("SUBMIT PIN  |  ENTER", BLUE, e -> authenticatePending(new String(pin.getPassword())));
         continueBtn.setPreferredSize(new Dimension(210, 40));
         JButton cancelBtn = action("CANCEL & EJECT", new Color(90, 102, 110), e -> ejectCard());
         cancelBtn.setPreferredSize(new Dimension(160, 40));
@@ -559,7 +538,7 @@ public class ATMGui {
         return p;
     }
 
-    // SCREEN 4: Main Menu Page
+    // SCREEN 4: Main Menu Page (Zero Tofu Boxes with Custom MenuOptionButton)
     private JPanel menuPage() {
         JPanel p = centered();
         p.setBorder(new EmptyBorder(12, 25, 12, 25));
@@ -582,12 +561,12 @@ public class ATMGui {
         grid.setOpaque(false);
         grid.setMaximumSize(new Dimension(560, 260));
 
-        grid.add(action("◀   CASH WITHDRAWAL", BLUE, e -> showWithdrawPage()));
-        grid.add(action("CASH DEPOSIT   ▶", TEAL, e -> showDepositPage()));
-        grid.add(action("◀   FUND TRANSFER", TEAL, e -> showTransferPage()));
-        grid.add(action("BALANCE INQUIRY   ▶", BLUE, e -> showBalance()));
-        grid.add(action("◀   MINI STATEMENT", new Color(55, 88, 115), e -> miniStatement()));
-        grid.add(action("EJECT CARD   ▶", new Color(175, 68, 60), e -> ejectCard()));
+        grid.add(new MenuOptionButton("CASH WITHDRAWAL", BLUE, true, e -> showWithdrawPage()));
+        grid.add(new MenuOptionButton("CASH DEPOSIT", TEAL, false, e -> showDepositPage()));
+        grid.add(new MenuOptionButton("FUND TRANSFER", TEAL, true, e -> showTransferPage()));
+        grid.add(new MenuOptionButton("BALANCE INQUIRY", BLUE, false, e -> showBalance()));
+        grid.add(new MenuOptionButton("MINI STATEMENT", new Color(55, 88, 115), true, e -> miniStatement()));
+        grid.add(new MenuOptionButton("EJECT CARD", new Color(175, 68, 60), false, e -> ejectCard()));
         p.add(grid);
 
         p.add(Box.createVerticalGlue());
@@ -641,7 +620,7 @@ public class ATMGui {
         p.add(customBox);
 
         p.add(Box.createVerticalStrut(8));
-        JLabel denomNote = new JLabel("●  Available Notes in Dispenser: $50, $100, $500, $1000", SwingConstants.CENTER);
+        JLabel denomNote = new JLabel("Available Notes in Dispenser: $50, $100, $500, $1000", SwingConstants.CENTER);
         denomNote.setFont(new Font("Segoe UI", Font.BOLD, 11));
         denomNote.setForeground(new Color(88, 112, 125));
         denomNote.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -682,7 +661,7 @@ public class ATMGui {
         if (fiveHundreds > 0) sb.append(fiveHundreds).append(" x $500  ");
         if (hundreds > 0) sb.append(hundreds).append(" x $100  ");
         if (fifties > 0) sb.append(fifties).append(" x $50  ");
-        if (amt > 0) sb.append(amt).append(" x $1 Coin  ");
+        if (amt > 0) sb.append(amt).append(" x $1 Change  ");
         sb.append("(Total: ").append(totalNotes).append(" Note").append(totalNotes > 1 ? "s)" : ")");
         return sb.toString();
     }
@@ -842,7 +821,7 @@ public class ATMGui {
         health.setMaximumSize(new Dimension(540, 52));
         health.add(statusTile("DISPENSER", "100% OK", TEAL));
         health.add(statusTile("PAPER ROLL", "88% OK", TEAL));
-        health.add(statusTile("NETWORK", "14ms (ONLINE)", TEAL));
+        health.add(statusTile("NETWORK", "14ms ONLINE", TEAL));
         health.add(statusTile("CARD SLOT", "SECURE", BLUE));
         p.add(health);
 
@@ -972,7 +951,7 @@ public class ATMGui {
         processingHeading.setFont(new Font("Segoe UI", Font.BOLD, 26)); processingHeading.setForeground(INK); processingHeading.setAlignmentX(Component.CENTER_ALIGNMENT);
         processingDetail.setFont(new Font("Segoe UI", Font.PLAIN, 16)); processingDetail.setForeground(new Color(70, 91, 105)); processingDetail.setAlignmentX(Component.CENTER_ALIGNMENT);
         p.add(processingHeading); p.add(Box.createVerticalStrut(18)); p.add(processingDetail); p.add(Box.createVerticalStrut(26));
-        p.add(label("●   ●   ●", 26, TEAL, SwingConstants.CENTER));
+        p.add(label("PROCESSING TRANSACTION", 16, TEAL, SwingConstants.CENTER));
         return p;
     }
 
@@ -1020,7 +999,7 @@ public class ATMGui {
         pinAttempts++; SoundEffects.warning();
         int left = 3 - pinAttempts;
         if (left > 0) {
-            pinAttemptsLabel.setText("● Incorrect PIN! Attempts remaining: " + left + " of 3");
+            pinAttemptsLabel.setText("Incorrect PIN! Attempts remaining: " + left + " of 3");
             pinAttemptsLabel.setForeground(new Color(200, 40, 40));
             dialog("Incorrect PIN. Attempts remaining: " + left);
             if (activePinField != null) {
@@ -1159,7 +1138,7 @@ public class ATMGui {
         }
         int index = 1;
         for (Account account : activeCustomer.getAccounts()) {
-            String text = "ACCOUNT " + index++ + "  •  " + account.getAccountNumber() + "  (Balance: " + money.format(account.checkBalance()) + ")";
+            String text = "ACCOUNT " + index++ + "  |  " + account.getAccountNumber() + "  (Balance: " + money.format(account.checkBalance()) + ")";
             accountSelectionOptions.add(action(text, index == 2 ? BLUE : TEAL, e -> {
                 activeAccount = account;
                 menuUserGreeting.setText("Welcome back, " + activeCustomer.getName() + "  |  Account: " + account.getAccountNumber());
@@ -1179,7 +1158,7 @@ public class ATMGui {
         statement.append("             MINI ACCOUNT STATEMENT          \n");
         statement.append("==============================================\n");
         statement.append("Date/Time: ").append(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy  hh:mm a"))).append("\n");
-        statement.append("Terminal : ATM-001 • CHATTOGRAM TERMINAL\n");
+        statement.append("Terminal : ATM-001 | CHATTOGRAM TERMINAL\n");
         statement.append("Customer : ").append(activeCustomer.getName().toUpperCase()).append("\n");
         statement.append("Account  : ").append(activeAccount.getAccountNumber()).append("\n");
         statement.append("Card     : ").append(maskedCard(activeCustomer.getCard().getCardNumber())).append("\n");
@@ -1246,7 +1225,7 @@ public class ATMGui {
         pinDotsIndicator.setFilledCount(0);
         if (activePinField != null) {
             activePinField.setText("");
-            activePinField.setEchoChar('\u2022');
+            activePinField.setEchoChar('*');
         }
         cardPort.setCardDetails(customer.getName(), customer.getCard().getCardNumber());
         detectedCardLabel.setText("Card Inserted: " + customer.getName() + "  (" + maskedCard(customer.getCard().getCardNumber()) + ")");
@@ -1259,7 +1238,7 @@ public class ATMGui {
         pages.show(screen, name);
     }
     private String id() { return "TXN-" + System.nanoTime(); }
-    private String maskedCard(String cardNumber) { return "••••  ••••  ••••  " + cardNumber.substring(cardNumber.length() - 4); }
+    private String maskedCard(String cardNumber) { return "****  ****  ****  " + cardNumber.substring(cardNumber.length() - 4); }
     private void dialog(String text) { JOptionPane.showMessageDialog(frame, text, "BITHM National Bank ATM", JOptionPane.INFORMATION_MESSAGE); }
 
     private JTextField field(String hint, boolean password) {
@@ -1285,16 +1264,132 @@ public class ATMGui {
     private void addAtmHeader(JPanel parent, String title, String subtitle) {
         JPanel header = new JPanel(new BorderLayout()); header.setOpaque(false); header.setMaximumSize(new Dimension(580, 40));
         JLabel bankLabel = new JLabel("BITHM NATIONAL BANK"); bankLabel.setFont(new Font("Segoe UI", Font.BOLD, 13)); bankLabel.setForeground(BLUE);
-        JLabel statusLabel = new JLabel("●  ATM-001  •  ONLINE"); statusLabel.setFont(new Font("Segoe UI", Font.BOLD, 10)); statusLabel.setForeground(TEAL);
+        JLabel statusLabel = new JLabel("ATM-001  |  ONLINE"); statusLabel.setFont(new Font("Segoe UI", Font.BOLD, 10)); statusLabel.setForeground(TEAL);
         header.add(bankLabel, BorderLayout.WEST); header.add(statusLabel, BorderLayout.EAST); parent.add(header); parent.add(Box.createVerticalStrut(14));
         parent.add(label(title, 24, INK, SwingConstants.CENTER)); parent.add(Box.createVerticalStrut(6)); parent.add(label(subtitle, 13, new Color(70, 91, 105), SwingConstants.CENTER));
     }
-    private void addSecureFooter(JPanel parent) { parent.add(label("●  Secure 256-Bit encrypted connection • Keep your card inserted", 10, new Color(88, 112, 125), SwingConstants.CENTER)); }
+    private void addSecureFooter(JPanel parent) { parent.add(label("Secure 256-Bit encrypted connection | Keep your card inserted", 10, new Color(88, 112, 125), SwingConstants.CENTER)); }
     private JPanel statusTile(String title, String value, Color color) {
         JPanel tile = column(); tile.setBackground(Color.WHITE); tile.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(189, 207, 215)), new EmptyBorder(7, 8, 7, 8)));
-        tile.add(label(title, 9, new Color(70, 91, 105), SwingConstants.CENTER)); tile.add(label("● " + value, 10, color, SwingConstants.CENTER)); return tile;
+        tile.add(label(title, 9, new Color(70, 91, 105), SwingConstants.CENTER)); tile.add(label(value, 10, color, SwingConstants.CENTER)); return tile;
     }
     private JLabel label(String text, int size, Color color, int alignment) { JLabel l = new JLabel("<html>" + text.replace("\n", "<br>") + "</html>", alignment); l.setFont(new Font("Segoe UI", Font.BOLD, size)); l.setForeground(color); l.setAlignmentX(Component.CENTER_ALIGNMENT); return l; }
+
+    /** Custom Menu Button with vector-painted indicator arrows (No Unicode tofu boxes). */
+    private static class MenuOptionButton extends JButton {
+        private final String title;
+        private final Color bgColor;
+        private final boolean arrowOnLeft;
+
+        MenuOptionButton(String title, Color bgColor, boolean arrowOnLeft, java.awt.event.ActionListener listener) {
+            super();
+            this.title = title;
+            this.bgColor = bgColor;
+            this.arrowOnLeft = arrowOnLeft;
+            setFont(new Font("Segoe UI", Font.BOLD, 14));
+            setForeground(Color.WHITE);
+            setFocusPainted(false);
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setContentAreaFilled(false);
+            setBorder(new EmptyBorder(12, 16, 12, 16));
+            addActionListener(listener);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            int w = getWidth(), h = getHeight();
+            boolean pressed = getModel().isPressed();
+            boolean hover = getModel().isRollover();
+
+            Color c = pressed ? bgColor.darker() : hover ? bgColor.brighter() : bgColor;
+            g2.setColor(c);
+            g2.fillRoundRect(2, 2, w - 4, h - 4, 8, 8);
+
+            g2.setColor(hover ? Color.WHITE : new Color(255, 255, 255, 60));
+            g2.setStroke(new BasicStroke(1.2f));
+            g2.drawRoundRect(2, 2, w - 4, h - 4, 8, 8);
+
+            // Vector Geometric Triangle Arrow (100% immune to missing font glyphs)
+            g2.setColor(Color.WHITE);
+            int s = 5;
+            int cy = h / 2;
+            if (arrowOnLeft) {
+                int ax = 18;
+                int[] px = {ax + s, ax - s, ax + s};
+                int[] py = {cy - s, cy, cy + s};
+                g2.fillPolygon(px, py, 3);
+            } else {
+                int ax = w - 18;
+                int[] px = {ax - s, ax + s, ax - s};
+                int[] py = {cy - s, cy, cy + s};
+                g2.fillPolygon(px, py, 3);
+            }
+
+            // Centered Text
+            g2.setFont(getFont());
+            int textW = g2.getFontMetrics().stringWidth(title);
+            int textX = (w - textW) / 2;
+            int textY = (h + g2.getFontMetrics().getAscent() - g2.getFontMetrics().getDescent()) / 2;
+            g2.drawString(title, textX, textY);
+
+            g2.dispose();
+        }
+    }
+
+    /** Feature 5: Tactile Hardware FDK Key with Pure Vector Arrow Polygon. */
+    private static class FdkHardwareButton extends JButton {
+        private final boolean pointRight;
+
+        FdkHardwareButton(boolean pointRight, String tooltip, java.awt.event.ActionListener listener) {
+            this.pointRight = pointRight;
+            setFocusPainted(false);
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setContentAreaFilled(false);
+            setToolTipText(tooltip);
+            setPreferredSize(new Dimension(46, 38));
+            setMaximumSize(new Dimension(46, 38));
+            setAlignmentX(Component.CENTER_ALIGNMENT);
+            addActionListener(listener);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            int w = getWidth(), h = getHeight();
+            boolean pressed = getModel().isPressed();
+            boolean hover = getModel().isRollover();
+
+            Color top = pressed ? new Color(35, 42, 48) : hover ? new Color(75, 88, 98) : new Color(55, 66, 74);
+            Color bot = pressed ? new Color(25, 30, 35) : hover ? new Color(45, 55, 62) : new Color(38, 46, 52);
+            g2.setPaint(new GradientPaint(0, 0, top, 0, h, bot));
+            g2.fillRoundRect(2, 2, w - 4, h - 4, 8, 8);
+
+            g2.setColor(hover ? new Color(180, 210, 230) : new Color(110, 125, 135));
+            g2.setStroke(new BasicStroke(1.5f));
+            g2.drawRoundRect(2, 2, w - 4, h - 4, 8, 8);
+
+            // Vector Triangle Arrow Polygon
+            g2.setColor(hover ? Color.WHITE : new Color(210, 230, 245));
+            int cx = w / 2, cy = h / 2, s = 5;
+            if (pointRight) {
+                int[] px = {cx - s, cx + s, cx - s};
+                int[] py = {cy - s, cy, cy + s};
+                g2.fillPolygon(px, py, 3);
+            } else {
+                int[] px = {cx + s, cx - s, cx + s};
+                int[] py = {cy - s, cy, cy + s};
+                g2.fillPolygon(px, py, 3);
+            }
+
+            g2.dispose();
+        }
+    }
 
     /** Custom interactive PIN indicator dots widget (4 circles). */
     private static class PinDotsPanel extends JPanel {
@@ -1755,7 +1850,7 @@ public class ATMGui {
                 g2.setColor(new Color(173, 132, 42)); g2.drawLine(18, 36, 40, 36);
                 g2.drawLine(29, 28, 29, 45);
                 g2.setColor(Color.WHITE); g2.setFont(new Font("Monospaced", Font.PLAIN, 6));
-                g2.drawString("••••", 18, 58); g2.drawString("••••", 18, 66); g2.drawString(cardLastFour, 18, 74);
+                g2.drawString("****", 18, 58); g2.drawString("****", 18, 66); g2.drawString(cardLastFour, 18, 74);
                 g2.setFont(new Font("Segoe UI", Font.BOLD, 4));
                 int holderWidth = g2.getFontMetrics().stringWidth(cardHolder);
                 g2.drawString(cardHolder, (58 - holderWidth) / 2, 84);
@@ -1770,7 +1865,7 @@ public class ATMGui {
                 }
                 g2.setColor(new Color(229, 246, 209)); g2.fillOval(w / 2 - 12, y + 3, 24, 17);
                 g2.setColor(new Color(39, 104, 50)); g2.setFont(new Font("Segoe UI", Font.BOLD, 8)); g2.drawString(String.valueOf((int) displayedAmount), w / 2 - 13, y + 15);
-                g2.setFont(new Font("Monospaced", Font.PLAIN, 5)); g2.drawString("BNB • AUTHENTIC", x + 8, y + 22);
+                g2.setFont(new Font("Monospaced", Font.PLAIN, 5)); g2.drawString("BNB * AUTHENTIC", x + 8, y + 22);
                 g2.setColor(new Color(48, 104, 54)); g2.fillRect(x + noteW - 24, y + 3, 3, 18);
             } else {
                 int y = (int) (24 + Math.max(0, progress) * 25), x = 28, paperW = w - 56;
