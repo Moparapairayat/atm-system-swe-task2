@@ -360,12 +360,45 @@ public class ATMGui {
     }
 
     private JPanel cardSelectionPage() {
-        JPanel p = centered(); addAtmHeader(p, "INSERT DEMO CARD", "Choose the customer card to insert into this simulator."); p.add(Box.createVerticalStrut(28));
-        p.add(action("ZIANA MEHNAZ RUHEE  •  •••• 4444", BLUE, e -> beginCardInsertion(customers[0])));
-        p.add(label("Demo PIN: 1234", 11, new Color(70, 91, 105), SwingConstants.CENTER)); p.add(Box.createVerticalStrut(12));
-        p.add(action("MOPARA PAIR AYAT  •  •••• 8888", TEAL, e -> beginCardInsertion(customers[1])));
-        p.add(label("Demo PIN: 4321", 11, new Color(70, 91, 105), SwingConstants.CENTER)); p.add(Box.createVerticalStrut(12));
-        p.add(action("BACK", new Color(90, 102, 110), e -> showPage("welcome"))); p.add(Box.createVerticalGlue()); addSecureFooter(p); return p;
+        JPanel p = centered();
+        p.setBorder(new EmptyBorder(12, 30, 12, 30));
+        addAtmHeader(p, "SELECT & INSERT CARD", "Click on any debit card below to insert it into the ATM slot.");
+        p.add(Box.createVerticalStrut(16));
+
+        JPanel cardsContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 24, 0));
+        cardsContainer.setOpaque(false);
+
+        // Card 1: Ziana Mehnaz Ruhee (Royal Sapphire / Platinum Debit)
+        JPanel card1Wrapper = column();
+        card1Wrapper.setOpaque(false);
+        card1Wrapper.add(new VisualDebitCard(customers[0], "BLUE", "1234", "08/29", "PLATINUM DEBIT", () -> beginCardInsertion(customers[0])));
+        card1Wrapper.add(Box.createVerticalStrut(8));
+        JLabel pinLabel1 = new JLabel("DEMO PIN: 1234  •  CLICK CARD TO INSERT", SwingConstants.CENTER);
+        pinLabel1.setFont(new Font("Segoe UI", Font.BOLD, 10));
+        pinLabel1.setForeground(BLUE);
+        pinLabel1.setAlignmentX(Component.CENTER_ALIGNMENT);
+        card1Wrapper.add(pinLabel1);
+        cardsContainer.add(card1Wrapper);
+
+        // Card 2: Mopara Pair Ayat (Emerald Gold VIP Debit)
+        JPanel card2Wrapper = column();
+        card2Wrapper.setOpaque(false);
+        card2Wrapper.add(new VisualDebitCard(customers[1], "GOLD", "4321", "12/30", "GOLD VIP DEBIT", () -> beginCardInsertion(customers[1])));
+        card2Wrapper.add(Box.createVerticalStrut(8));
+        JLabel pinLabel2 = new JLabel("DEMO PIN: 4321  •  CLICK CARD TO INSERT", SwingConstants.CENTER);
+        pinLabel2.setFont(new Font("Segoe UI", Font.BOLD, 10));
+        pinLabel2.setForeground(new Color(175, 120, 20));
+        pinLabel2.setAlignmentX(Component.CENTER_ALIGNMENT);
+        card2Wrapper.add(pinLabel2);
+        cardsContainer.add(card2Wrapper);
+
+        p.add(cardsContainer);
+        p.add(Box.createVerticalStrut(16));
+
+        p.add(action("BACK TO WELCOME", new Color(90, 102, 110), e -> showPage("welcome")));
+        p.add(Box.createVerticalGlue());
+        addSecureFooter(p);
+        return p;
     }
 
     private JPanel menuPage() {
@@ -851,6 +884,151 @@ public class ATMGui {
             g2.fillRect(x + 20, y + 18, 3, 9);
             g2.fillRect(x + 25, y + 18, 3, 9);
             g2.fillRect(x + 7, y + 28, 22, 3);
+            g2.dispose();
+        }
+    }
+
+    /** Realistic interactive visual debit card component. */
+    private static class VisualDebitCard extends JPanel {
+        private final Customer customer;
+        private final String theme; // "BLUE" or "GOLD"
+        private final String pinHint;
+        private final String expiry;
+        private final String cardType;
+        private final Runnable onClick;
+        private boolean isHovered = false;
+
+        VisualDebitCard(Customer customer, String theme, String pinHint, String expiry, String cardType, Runnable onClick) {
+            this.customer = customer;
+            this.theme = theme;
+            this.pinHint = pinHint;
+            this.expiry = expiry;
+            this.cardType = cardType;
+            this.onClick = onClick;
+
+            setPreferredSize(new Dimension(270, 168));
+            setMaximumSize(new Dimension(270, 168));
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setOpaque(false);
+            setToolTipText("Click to insert " + customer.getName() + "'s card (PIN: " + pinHint + ")");
+
+            addMouseListener(new java.awt.event.MouseAdapter() {
+                @Override public void mouseEntered(java.awt.event.MouseEvent e) { isHovered = true; repaint(); }
+                @Override public void mouseExited(java.awt.event.MouseEvent e) { isHovered = false; repaint(); }
+                @Override public void mouseClicked(java.awt.event.MouseEvent e) { onClick.run(); }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            int w = getWidth(), h = getHeight();
+            int yOffset = isHovered ? 0 : 2;
+
+            // Card Shadow
+            g2.setColor(new Color(0, 0, 0, isHovered ? 60 : 35));
+            g2.fillRoundRect(3, yOffset + 5, w - 6, h - 8, 16, 16);
+
+            // Card Gradient Background
+            if (theme.equals("BLUE")) {
+                // Royal Navy & Sapphire
+                g2.setPaint(new GradientPaint(0, yOffset, new Color(14, 42, 85), w, h + yOffset, new Color(6, 20, 44)));
+            } else {
+                // Emerald Dark Gold VIP
+                g2.setPaint(new GradientPaint(0, yOffset, new Color(50, 38, 14), w, h + yOffset, new Color(18, 14, 5)));
+            }
+            g2.fillRoundRect(2, yOffset, w - 4, h - 6, 14, 14);
+
+            // Holographic Sheen Arch
+            g2.setColor(new Color(255, 255, 255, isHovered ? 26 : 14));
+            g2.fillArc(-w / 2, yOffset - 30, w * 2, h + 20, 190, 70);
+
+            // Card Border (Glows on hover)
+            if (isHovered) {
+                g2.setColor(theme.equals("BLUE") ? new Color(120, 195, 255) : new Color(255, 215, 100));
+                g2.setStroke(new BasicStroke(2.0f));
+            } else {
+                g2.setColor(theme.equals("BLUE") ? new Color(45, 95, 155) : new Color(140, 105, 38));
+                g2.setStroke(new BasicStroke(1.2f));
+            }
+            g2.drawRoundRect(2, yOffset, w - 4, h - 6, 14, 14);
+
+            // 1. Top Bank Title & Type
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 10));
+            g2.drawString("BITHM NATIONAL BANK", 14, yOffset + 18);
+
+            g2.setColor(theme.equals("BLUE") ? new Color(140, 210, 255) : new Color(255, 210, 100));
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 8));
+            int typeW = g2.getFontMetrics().stringWidth(cardType);
+            g2.drawString(cardType, w - typeW - 14, yOffset + 18);
+
+            // 2. Metallic Gold EMV Chip
+            int chipX = 14, chipY = yOffset + 30, chipW = 26, chipH = 20;
+            g2.setPaint(new GradientPaint(chipX, chipY, new Color(245, 210, 95), chipX + chipW, chipY + chipH, new Color(185, 140, 30)));
+            g2.fillRoundRect(chipX, chipY, chipW, chipH, 4, 4);
+            g2.setColor(new Color(130, 95, 20));
+            g2.drawRoundRect(chipX, chipY, chipW, chipH, 4, 4);
+            g2.drawLine(chipX, chipY + 10, chipX + chipW, chipY + 10);
+            g2.drawLine(chipX + 9, chipY, chipX + 9, chipY + chipH);
+            g2.drawLine(chipX + 17, chipY, chipX + 17, chipY + chipH);
+
+            // Contactless Radio Wave Icon
+            g2.setColor(new Color(255, 255, 255, 180));
+            g2.setStroke(new BasicStroke(1.3f));
+            g2.drawArc(chipX + 32, chipY + 3, 7, 13, -45, 90);
+            g2.drawArc(chipX + 36, chipY + 1, 11, 17, -45, 90);
+            g2.drawArc(chipX + 40, chipY - 1, 15, 21, -45, 90);
+
+            // 3. Formatted Card Number
+            String num = customer.getCard().getCardNumber();
+            String formattedNum = num.length() >= 16 ?
+                    num.substring(0, 4) + "  " + num.substring(5, 9) + "  " + num.substring(10, 14) + "  " + num.substring(15) : num;
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 13));
+            g2.drawString(formattedNum, 14, yOffset + 78);
+
+            // 4. Valid Thru Date
+            g2.setColor(new Color(200, 220, 235));
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 7));
+            g2.drawString("VALID THRU", 14, yOffset + 98);
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 9));
+            g2.drawString(expiry, 64, yOffset + 99);
+
+            // 5. Cardholder Name
+            g2.setColor(Color.WHITE);
+            g2.setFont(new Font("Segoe UI", Font.BOLD, 10));
+            g2.drawString(customer.getName().toUpperCase(), 14, yOffset + 120);
+
+            // 6. Mini Card Brand Emblem (Bottom Right)
+            if (theme.equals("BLUE")) {
+                // Mini Visa
+                g2.setColor(new Color(247, 182, 0));
+                g2.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 13));
+                g2.drawString("VISA", w - 46, yOffset + 122);
+            } else {
+                // Mini Mastercard Circles
+                int mx = w - 42, my = yOffset + 110, mr = 13;
+                g2.setColor(new Color(235, 0, 27));
+                g2.fillOval(mx, my, mr, mr);
+                g2.setColor(new Color(247, 158, 27));
+                g2.fillOval(mx + 9, my, mr, mr);
+            }
+
+            // Hover indicator banner
+            if (isHovered) {
+                g2.setColor(new Color(0, 0, 0, 150));
+                g2.fillRoundRect(w / 2 - 58, yOffset + 136, 116, 16, 8, 8);
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Segoe UI", Font.BOLD, 8));
+                g2.drawString("CLICK TO INSERT CARD", w / 2 - 50, yOffset + 148);
+            }
+
             g2.dispose();
         }
     }
