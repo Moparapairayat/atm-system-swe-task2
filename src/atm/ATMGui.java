@@ -66,7 +66,7 @@ public class ATMGui {
     private final JLabel transferAccountInfoLabel = new JLabel("", SwingConstants.CENTER);
     private final JPanel transferSuggestionsPanel = new JPanel();
     private final JLabel liveClockLabel = new JLabel("", SwingConstants.RIGHT);
-    private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy • hh:mm:ss a");
+    private final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy  |  hh:mm:ss a");
     private JPasswordField activePinField;
     private Customer activeCustomer;
     private Customer pendingCustomer;
@@ -92,7 +92,7 @@ public class ATMGui {
     }
 
     private void updateClock() {
-        liveClockLabel.setText("🕒  " + LocalDateTime.now().format(timeFormat));
+        liveClockLabel.setText(LocalDateTime.now().format(timeFormat));
     }
 
     private void buildWindow() {
@@ -134,7 +134,7 @@ public class ATMGui {
         JLabel brand = new JLabel("BITHM NATIONAL BANK");
         brand.setForeground(Color.WHITE);
         brand.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        JLabel branch = new JLabel("• CHATTOGRAM BRANCH");
+        JLabel branch = new JLabel("•  CHATTOGRAM TERMINAL 001");
         branch.setForeground(new Color(160, 205, 235));
         branch.setFont(new Font("Segoe UI", Font.BOLD, 11));
         left.add(brand);
@@ -170,7 +170,7 @@ public class ATMGui {
         brand.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(brand);
         left.add(Box.createVerticalStrut(8));
-        JLabel light = label("◒  CONTACTLESS READY", 10, new Color(91, 221, 144), SwingConstants.CENTER);
+        JLabel light = label("●  CONTACTLESS READY", 10, new Color(91, 221, 144), SwingConstants.CENTER);
         light.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(light);
         left.add(Box.createVerticalGlue());
@@ -238,10 +238,10 @@ public class ATMGui {
 
     private JPanel welcomePage() {
         JPanel p = centered();
-        p.setBorder(new EmptyBorder(14, 50, 12, 50));
+        p.setBorder(new EmptyBorder(16, 50, 14, 50));
 
         // Top Bank Emblem & Title Header
-        JPanel emblemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        JPanel emblemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
         emblemPanel.setOpaque(false);
         JLabel logo = new JLabel(new BankLogoIcon());
         JLabel bankTitle = new JLabel("BITHM NATIONAL BANK");
@@ -252,7 +252,7 @@ public class ATMGui {
         p.add(emblemPanel);
 
         p.add(Box.createVerticalStrut(4));
-        JLabel tagline = new JLabel("24/7 Smart ATM & Digital Banking Services • Chattogram Terminal 001", SwingConstants.CENTER);
+        JLabel tagline = new JLabel("24/7 Smart ATM & Digital Banking Kiosk  •  Chattogram Terminal 001", SwingConstants.CENTER);
         tagline.setFont(new Font("Segoe UI", Font.BOLD, 12));
         tagline.setForeground(new Color(88, 112, 125));
         tagline.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -261,43 +261,43 @@ public class ATMGui {
         p.add(Box.createVerticalStrut(6));
         JPanel statusPill = new JPanel(new FlowLayout(FlowLayout.CENTER, 6, 2));
         statusPill.setOpaque(false);
-        JLabel statusDot = new JLabel("●  ATM ONLINE  •  DISPENSER READY  •  EMV SECURED");
+        JLabel statusDot = new JLabel("●  ATM ONLINE   •   DISPENSER READY   •   EMV CHIP SECURED");
         statusDot.setFont(new Font("Segoe UI", Font.BOLD, 10));
         statusDot.setForeground(new Color(12, 138, 98));
         statusPill.add(statusDot);
         p.add(statusPill);
 
-        p.add(Box.createVerticalStrut(12));
+        p.add(Box.createVerticalStrut(14));
 
         // Central Welcome Card Container
         JPanel cardBox = column();
         cardBox.setBackground(Color.WHITE);
-        cardBox.setMaximumSize(new Dimension(480, 240));
+        cardBox.setMaximumSize(new Dimension(480, 230));
         cardBox.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 207, 215), 1),
-                new EmptyBorder(18, 30, 16, 30)));
+                new EmptyBorder(18, 30, 18, 30)));
 
-        JLabel welcomeHeading = new JLabel("WELCOME / স্বাগতম", SwingConstants.CENTER);
-        welcomeHeading.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        JLabel welcomeHeading = new JLabel("WELCOME TO BITHM BANK", SwingConstants.CENTER);
+        welcomeHeading.setFont(new Font("Segoe UI", Font.BOLD, 20));
         welcomeHeading.setForeground(INK);
         welcomeHeading.setAlignmentX(Component.CENTER_ALIGNMENT);
         cardBox.add(welcomeHeading);
 
         cardBox.add(Box.createVerticalStrut(6));
-        JLabel instruction = new JLabel("Please insert your debit card to initiate a session", SwingConstants.CENTER);
+        JLabel instruction = new JLabel("Please insert your debit card to initiate a secure session", SwingConstants.CENTER);
         instruction.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         instruction.setForeground(new Color(80, 95, 105));
         instruction.setAlignmentX(Component.CENTER_ALIGNMENT);
         cardBox.add(instruction);
 
         cardBox.add(Box.createVerticalStrut(16));
-        JButton insertBtn = action("💳   INSERT CARD  /  কার্ড প্রবেশ করান", BLUE, e -> showPage("cardSelection"));
+        JButton insertBtn = action("INSERT DEBIT CARD", BLUE, e -> showPage("cardSelection"));
         insertBtn.setPreferredSize(new Dimension(360, 44));
         insertBtn.setMaximumSize(new Dimension(360, 44));
         cardBox.add(insertBtn);
 
         cardBox.add(Box.createVerticalStrut(10));
-        JButton techBtn = action("🛠️   TECHNICIAN ACCESS  /  সার্ভিস কনসোল", new Color(74, 85, 94), e -> showPage("technician"));
+        JButton techBtn = action("TECHNICIAN SERVICE CONSOLE", new Color(74, 85, 94), e -> showPage("technician"));
         techBtn.setFont(new Font("Segoe UI", Font.BOLD, 12));
         techBtn.setPreferredSize(new Dimension(360, 36));
         techBtn.setMaximumSize(new Dimension(360, 36));
@@ -315,7 +315,7 @@ public class ATMGui {
             badge.setForeground(new Color(70, 91, 105));
             badge.setBorder(BorderFactory.createCompoundBorder(
                     BorderFactory.createLineBorder(new Color(185, 202, 212)),
-                    new EmptyBorder(3, 7, 3, 7)));
+                    new EmptyBorder(4, 8, 4, 8)));
             badge.setOpaque(true);
             badge.setBackground(new Color(244, 248, 250));
             cardsBar.add(badge);
@@ -323,14 +323,14 @@ public class ATMGui {
         p.add(cardsBar);
 
         p.add(Box.createVerticalStrut(8));
-        JLabel securityNote = new JLabel("🔒  Protected with 256-Bit SSL & EMV Hardware Security", SwingConstants.CENTER);
+        JLabel securityNote = new JLabel("●  Protected with 256-Bit SSL & EMV Hardware Security", SwingConstants.CENTER);
         securityNote.setFont(new Font("Segoe UI", Font.BOLD, 10));
         securityNote.setForeground(new Color(90, 110, 120));
         securityNote.setAlignmentX(Component.CENTER_ALIGNMENT);
         p.add(securityNote);
 
         p.add(Box.createVerticalGlue());
-        JLabel devCredit = new JLabel("BITHM College Of Professionals • Student Developer: Mopara Pair Ayat", SwingConstants.CENTER);
+        JLabel devCredit = new JLabel("BITHM College Of Professionals  •  Student Developer: Mopara Pair Ayat", SwingConstants.CENTER);
         devCredit.setFont(new Font("Segoe UI", Font.PLAIN, 10));
         devCredit.setForeground(new Color(120, 138, 148));
         devCredit.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -820,7 +820,7 @@ public class ATMGui {
         header.add(bankLabel, BorderLayout.WEST); header.add(statusLabel, BorderLayout.EAST); parent.add(header); parent.add(Box.createVerticalStrut(20));
         parent.add(label(title, 25, INK, SwingConstants.CENTER)); parent.add(Box.createVerticalStrut(7)); parent.add(label(subtitle, 14, new Color(70, 91, 105), SwingConstants.CENTER));
     }
-    private void addSecureFooter(JPanel parent) { parent.add(label("🔒  Secure encrypted connection • Please keep your card inserted", 10, new Color(88, 112, 125), SwingConstants.CENTER)); }
+    private void addSecureFooter(JPanel parent) { parent.add(label("●  Secure encrypted connection • Please keep your card inserted", 10, new Color(88, 112, 125), SwingConstants.CENTER)); }
     private JPanel statusTile(String title, String value, Color color) {
         JPanel tile = column(); tile.setBackground(Color.WHITE); tile.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(189, 207, 215)), new EmptyBorder(7, 8, 7, 8)));
         tile.add(label(title, 9, new Color(70, 91, 105), SwingConstants.CENTER)); tile.add(label("● " + value, 10, color, SwingConstants.CENTER)); return tile;
