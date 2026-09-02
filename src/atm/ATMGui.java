@@ -238,7 +238,7 @@ public class ATMGui {
 
     private JPanel welcomePage() {
         JPanel p = centered();
-        p.setBorder(new EmptyBorder(16, 50, 14, 50));
+        p.setBorder(new EmptyBorder(14, 50, 12, 50));
 
         // Top Bank Emblem & Title Header
         JPanel emblemPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 0));
@@ -267,15 +267,15 @@ public class ATMGui {
         statusPill.add(statusDot);
         p.add(statusPill);
 
-        p.add(Box.createVerticalStrut(14));
+        p.add(Box.createVerticalStrut(12));
 
         // Central Welcome Card Container
         JPanel cardBox = column();
         cardBox.setBackground(Color.WHITE);
-        cardBox.setMaximumSize(new Dimension(480, 230));
+        cardBox.setMaximumSize(new Dimension(480, 225));
         cardBox.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(189, 207, 215), 1),
-                new EmptyBorder(18, 30, 18, 30)));
+                new EmptyBorder(16, 30, 16, 30)));
 
         JLabel welcomeHeading = new JLabel("WELCOME TO BITHM BANK", SwingConstants.CENTER);
         welcomeHeading.setFont(new Font("Segoe UI", Font.BOLD, 20));
@@ -283,14 +283,14 @@ public class ATMGui {
         welcomeHeading.setAlignmentX(Component.CENTER_ALIGNMENT);
         cardBox.add(welcomeHeading);
 
-        cardBox.add(Box.createVerticalStrut(6));
+        cardBox.add(Box.createVerticalStrut(5));
         JLabel instruction = new JLabel("Please insert your debit card to initiate a secure session", SwingConstants.CENTER);
         instruction.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         instruction.setForeground(new Color(80, 95, 105));
         instruction.setAlignmentX(Component.CENTER_ALIGNMENT);
         cardBox.add(instruction);
 
-        cardBox.add(Box.createVerticalStrut(16));
+        cardBox.add(Box.createVerticalStrut(14));
         JButton insertBtn = action("INSERT DEBIT CARD", BLUE, e -> showPage("cardSelection"));
         insertBtn.setPreferredSize(new Dimension(360, 44));
         insertBtn.setMaximumSize(new Dimension(360, 44));
@@ -304,23 +304,17 @@ public class ATMGui {
         cardBox.add(techBtn);
 
         p.add(cardBox);
-        p.add(Box.createVerticalStrut(14));
+        p.add(Box.createVerticalStrut(12));
 
-        // Supported Payment Cards & Security Badges Bar
-        JPanel cardsBar = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
-        cardsBar.setOpaque(false);
-        for (String brandName : new String[]{"VISA", "MasterCard", "UnionPay", "NPSB / Q-Cash", "EMV Chip"}) {
-            JLabel badge = new JLabel(brandName);
-            badge.setFont(new Font("Segoe UI", Font.BOLD, 10));
-            badge.setForeground(new Color(70, 91, 105));
-            badge.setBorder(BorderFactory.createCompoundBorder(
-                    BorderFactory.createLineBorder(new Color(185, 202, 212)),
-                    new EmptyBorder(4, 8, 4, 8)));
-            badge.setOpaque(true);
-            badge.setBackground(new Color(244, 248, 250));
-            cardsBar.add(badge);
-        }
-        p.add(cardsBar);
+        // Realistic Brand Logos Bar
+        JPanel logosBar = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        logosBar.setOpaque(false);
+        logosBar.add(new CardBrandBadge("VISA"));
+        logosBar.add(new CardBrandBadge("MASTERCARD"));
+        logosBar.add(new CardBrandBadge("UNIONPAY"));
+        logosBar.add(new CardBrandBadge("NPSB"));
+        logosBar.add(new CardBrandBadge("EMV"));
+        p.add(logosBar);
 
         p.add(Box.createVerticalStrut(8));
         JLabel securityNote = new JLabel("●  Protected with 256-Bit SSL & EMV Hardware Security", SwingConstants.CENTER);
@@ -861,6 +855,110 @@ public class ATMGui {
         }
     }
 
+    /** Authentic custom painted card brand badge component. */
+    private static class CardBrandBadge extends JPanel {
+        private final String brand;
+
+        CardBrandBadge(String brand) {
+            this.brand = brand;
+            int width = brand.equals("NPSB") ? 82 : brand.equals("MASTERCARD") ? 64 : 58;
+            setPreferredSize(new Dimension(width, 28));
+            setMaximumSize(new Dimension(width, 28));
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+            int w = getWidth(), h = getHeight();
+
+            // Background card badge container
+            g2.setColor(Color.WHITE);
+            g2.fillRoundRect(1, 1, w - 2, h - 2, 6, 6);
+            g2.setColor(new Color(185, 200, 210));
+            g2.drawRoundRect(1, 1, w - 3, h - 3, 6, 6);
+
+            if (brand.equals("VISA")) {
+                // Official Visa colors: Deep Navy Blue + Gold wing on V
+                g2.setFont(new Font("Arial", Font.BOLD | Font.ITALIC, 14));
+                g2.setColor(new Color(26, 31, 113)); // Visa Deep Blue
+                g2.drawString("VISA", 12, 19);
+                // Gold triangle tip on top of V
+                g2.setColor(new Color(247, 182, 0)); // Visa Gold
+                int[] vx = {12, 17, 12};
+                int[] vy = {9, 9, 13};
+                g2.fillPolygon(vx, vy, 3);
+            } else if (brand.equals("MASTERCARD")) {
+                // Official Mastercard overlapping red and orange circles
+                int cx = 15, cy = 6, r = 16;
+                // Red circle
+                g2.setColor(new Color(235, 0, 27));
+                g2.fillOval(cx, cy, r, r);
+                // Yellow-Orange circle
+                g2.setColor(new Color(247, 158, 27));
+                g2.fillOval(cx + 12, cy, r, r);
+                // Translucent overlap
+                g2.setColor(new Color(255, 95, 0, 210));
+                java.awt.geom.Area a1 = new java.awt.geom.Area(new java.awt.geom.Ellipse2D.Double(cx, cy, r, r));
+                java.awt.geom.Area a2 = new java.awt.geom.Area(new java.awt.geom.Ellipse2D.Double(cx + 12, cy, r, r));
+                a1.intersect(a2);
+                g2.fill(a1);
+            } else if (brand.equals("UNIONPAY")) {
+                // UnionPay 3 slanted pills (Red, Blue, Green)
+                int startX = 6;
+                g2.setColor(new Color(226, 26, 34));
+                g2.fillRoundRect(startX, 6, 8, 16, 3, 3);
+                g2.setColor(new Color(0, 44, 108));
+                g2.fillRoundRect(startX + 6, 6, 8, 16, 3, 3);
+                g2.setColor(new Color(0, 121, 52));
+                g2.fillRoundRect(startX + 12, 6, 8, 16, 3, 3);
+                // Text
+                g2.setColor(new Color(0, 44, 108));
+                g2.setFont(new Font("Segoe UI", Font.BOLD | Font.ITALIC, 9));
+                g2.drawString("Union", startX + 22, 13);
+                g2.setColor(new Color(226, 26, 34));
+                g2.drawString("Pay", startX + 22, 22);
+            } else if (brand.equals("NPSB")) {
+                // Bangladesh NPSB (National Payment Switch) & Q-Cash
+                g2.setColor(new Color(0, 106, 78)); // Green
+                g2.fillRoundRect(4, 5, 34, 18, 4, 4);
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Segoe UI", Font.BOLD, 9));
+                g2.drawString("NPSB", 7, 18);
+
+                g2.setColor(new Color(227, 27, 35)); // Red
+                g2.fillRoundRect(41, 5, 37, 18, 4, 4);
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Segoe UI", Font.BOLD, 8));
+                g2.drawString("Q-Cash", 43, 17);
+            } else if (brand.equals("EMV")) {
+                // Gold EMV Chip & Contactless wave
+                // Metallic Chip
+                g2.setColor(new Color(225, 180, 60));
+                g2.fillRoundRect(6, 6, 17, 16, 3, 3);
+                g2.setColor(new Color(160, 120, 30));
+                g2.drawRoundRect(6, 6, 17, 16, 3, 3);
+                g2.drawLine(6, 14, 23, 14);
+                g2.drawLine(14, 6, 14, 22);
+
+                // Contactless Wave Arcs
+                g2.setColor(new Color(30, 80, 120));
+                g2.setStroke(new BasicStroke(1.4f));
+                g2.drawArc(24, 7, 10, 14, -45, 90);
+                g2.drawArc(28, 5, 14, 18, -45, 90);
+                g2.drawArc(32, 3, 18, 22, -45, 90);
+
+                g2.setFont(new Font("Segoe UI", Font.BOLD, 7));
+                g2.drawString("CHIP", 37, 24);
+            }
+            g2.dispose();
+        }
+    }
+
     private static final class LockIcon implements Icon {
         private final Color color;
 
@@ -868,14 +966,14 @@ public class ATMGui {
         @Override public int getIconWidth() { return 12; }
         @Override public int getIconHeight() { return 14; }
         @Override public void paintIcon(Component component, Graphics graphics, int x, int y) {
-            Graphics2D g = (Graphics2D) graphics.create();
-            g.setColor(color);
-            g.setStroke(new BasicStroke(1.6f));
-            g.drawRoundRect(x + 3, y + 1, 6, 7, 4, 4);
-            g.fillRoundRect(x + 1, y + 6, 10, 7, 2, 2);
-            g.setColor(SCREEN);
-            g.fillRect(x + 5, y + 9, 2, 2);
-            g.dispose();
+            Graphics2D g2 = (Graphics2D) graphics.create();
+            g2.setColor(color);
+            g2.setStroke(new BasicStroke(1.6f));
+            g2.drawRoundRect(x + 3, y + 1, 6, 7, 4, 4);
+            g2.fillRoundRect(x + 1, y + 6, 10, 7, 2, 2);
+            g2.setColor(SCREEN);
+            g2.fillRect(x + 5, y + 9, 2, 2);
+            g2.dispose();
         }
     }
 
