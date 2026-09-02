@@ -57,6 +57,10 @@ public class ATMGui {
     private final JLabel detectedCardLabel = new JLabel("", SwingConstants.CENTER);
     private final JTextArea statementContent = new JTextArea();
     private final JPanel accountSelectionOptions = column();
+    private final JTextField transferDestField = new JTextField();
+    private final JTextField transferAmountField = new JTextField();
+    private final JLabel transferAccountInfoLabel = new JLabel("", SwingConstants.CENTER);
+    private final JPanel transferSuggestionsPanel = new JPanel();
     private JPasswordField activePinField;
     private Customer activeCustomer;
     private Customer pendingCustomer;
@@ -138,34 +142,42 @@ public class ATMGui {
         left.add(Box.createVerticalGlue());
         cardPort.setAlignmentX(Component.CENTER_ALIGNMENT);
         left.add(cardPort);
-        // Status is painted inside the card-reader frame so it never overflows its border.
         return left;
     }
 
     private JPanel keypad() {
-        JPanel holder = column();
-        holder.setPreferredSize(new Dimension(170, 0));
-        holder.setBackground(new Color(43, 50, 56));
-        JLabel title = label("SECURE KEYPAD • ⠿", 12, new Color(210, 220, 225), SwingConstants.CENTER);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        holder.add(title);
-        holder.add(Box.createVerticalStrut(14));
-        JPanel keys = new JPanel(new GridLayout(4, 3, 7, 7));
-        keys.setOpaque(false);
-        for (String value : new String[]{"1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "0", "ENTER"}) {
-            JButton key = new JButton(value);
-            key.setFont(new Font("Segoe UI", Font.BOLD, value.equals("ENTER") ? 10 : 16));
-            key.setForeground(Color.WHITE);
-            key.setBackground(value.equals("C") ? new Color(180, 72, 67) : value.equals("ENTER") ? TEAL : new Color(82, 91, 98));
-            key.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(171, 186, 194)), new EmptyBorder(5, 5, 5, 5)));
-            key.setFocusPainted(false);
-            key.addActionListener(e -> handleKey(value));
-            keys.add(key);
+        JPanel p = new JPanel(new GridLayout(4, 3, 7, 7));
+        p.setBackground(new Color(32, 38, 43));
+        p.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(90, 102, 110), 2), new EmptyBorder(16, 12, 16, 12)));
+        String[] keys = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "C", "0", "ENTER"};
+        for (String k : keys) {
+            Color color = k.equals("ENTER") ? TEAL : k.equals("C") ? new Color(176, 68, 60) : new Color(64, 76, 85);
+            p.add(keyBtn(k, color));
         }
-        holder.add(keys);
+        JPanel holder = column();
+        holder.setPreferredSize(new Dimension(200, 0));
+        holder.setBackground(new Color(43, 50, 56));
+        JLabel keypadTitle = label("PIN KEYPAD", 13, Color.WHITE, SwingConstants.CENTER);
+        keypadTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        holder.add(keypadTitle);
+        holder.add(Box.createVerticalStrut(12));
+        holder.add(p);
         holder.add(Box.createVerticalGlue());
         holder.add(label("●  HELP / ACCESSIBILITY", 9, new Color(183, 195, 202), SwingConstants.CENTER));
         return holder;
+    }
+
+    private JButton keyBtn(String text, Color color) {
+        JButton b = new JButton(text);
+        b.setFont(new Font("Segoe UI", Font.BOLD, text.length() > 1 ? 12 : 17));
+        b.setForeground(Color.WHITE);
+        b.setBackground(color);
+        b.setFocusPainted(false);
+        b.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(110, 124, 133)), new EmptyBorder(10, 8, 10, 8)));
+        b.addActionListener(e -> handleKey(text));
+        return b;
     }
 
     private void addPages() {
@@ -247,7 +259,7 @@ public class ATMGui {
         grid.add(action("BALANCE INQUIRY", BLUE, e -> showBalance()));
         grid.add(action("CASH WITHDRAWAL", BLUE, e -> showPage("withdraw")));
         grid.add(action("CASH DEPOSIT", TEAL, e -> showPage("deposit")));
-        grid.add(action("FUND TRANSFER", TEAL, e -> showPage("transfer")));
+        grid.add(action("FUND TRANSFER", TEAL, e -> showTransferPage()));
         grid.add(action("MINI STATEMENT", new Color(77, 101, 118), e -> miniStatement()));
         grid.add(action("EJECT CARD", new Color(166, 76, 69), e -> ejectCard()));
         p.add(grid);
@@ -277,6 +289,12 @@ public class ATMGui {
         JPanel values = new JPanel(new GridLayout(2, 2, 10, 10)); values.setOpaque(false);
         for (int value : new int[]{500, 1000, 2000, 5000}) values.add(action(money.format(value), BLUE, e -> transact(type, value)));
         p.add(values); p.add(Box.createVerticalStrut(14));
+        JLabel customAmtLabel = new JLabel("Or enter custom amount ($):", SwingConstants.CENTER);
+        customAmtLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        customAmtLabel.setForeground(INK);
+        customAmtLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(customAmtLabel);
+        p.add(Box.createVerticalStrut(4));
         JTextField other = field("Other amount", false); p.add(other); p.add(Box.createVerticalStrut(10));
         p.add(action(withdrawal ? "CONFIRM AMOUNT" : "OPEN DEPOSIT SLOT", TEAL, e -> {
             try { transact(type, Double.parseDouble(other.getText().trim())); }
@@ -289,14 +307,85 @@ public class ATMGui {
 
     private JPanel transferPage() {
         JPanel p = centered();
-        addAtmHeader(p, "FUND TRANSFER", "Transfer securely to another BITHM account.");
-        p.add(Box.createVerticalStrut(20));
-        JTextField destination = field("Destination account number", false);
-        JTextField amount = field("Amount", false);
-        p.add(destination); p.add(Box.createVerticalStrut(10)); p.add(amount); p.add(Box.createVerticalStrut(14));
-        p.add(action("TRANSFER NOW", TEAL, e -> transfer(destination.getText().trim(), amount.getText().trim())));
-        p.add(Box.createVerticalStrut(8)); p.add(action("BACK", new Color(90, 102, 110), e -> showPage("menu")));
-        p.add(Box.createVerticalGlue()); addSecureFooter(p);
+        addAtmHeader(p, "FUND TRANSFER", "Transfer funds securely to another BITHM account.");
+        p.add(Box.createVerticalStrut(12));
+
+        JPanel formCard = column();
+        formCard.setBackground(Color.WHITE);
+        formCard.setMaximumSize(new Dimension(500, 320));
+        formCard.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(189, 207, 215), 1),
+                new EmptyBorder(16, 26, 16, 26)));
+
+        transferAccountInfoLabel.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        transferAccountInfoLabel.setForeground(BLUE);
+        transferAccountInfoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        formCard.add(transferAccountInfoLabel);
+        formCard.add(Box.createVerticalStrut(12));
+
+        JLabel destLabel = new JLabel("Recipient / Destination Account Number:");
+        destLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        destLabel.setForeground(INK);
+        destLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        formCard.add(destLabel);
+        formCard.add(Box.createVerticalStrut(4));
+
+        transferDestField.setFont(BODY);
+        transferDestField.setPreferredSize(new Dimension(360, 38));
+        transferDestField.setMaximumSize(new Dimension(360, 38));
+        transferDestField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(142, 165, 177)),
+                new EmptyBorder(6, 10, 6, 10)));
+        formCard.add(transferDestField);
+        formCard.add(Box.createVerticalStrut(6));
+
+        transferSuggestionsPanel.setOpaque(false);
+        transferSuggestionsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 6, 2));
+        transferSuggestionsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        formCard.add(transferSuggestionsPanel);
+        formCard.add(Box.createVerticalStrut(10));
+
+        JLabel amtLabel = new JLabel("Transfer Amount ($):");
+        amtLabel.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        amtLabel.setForeground(INK);
+        amtLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        formCard.add(amtLabel);
+        formCard.add(Box.createVerticalStrut(4));
+
+        transferAmountField.setFont(BODY);
+        transferAmountField.setPreferredSize(new Dimension(360, 38));
+        transferAmountField.setMaximumSize(new Dimension(360, 38));
+        transferAmountField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(142, 165, 177)),
+                new EmptyBorder(6, 10, 6, 10)));
+        formCard.add(transferAmountField);
+        formCard.add(Box.createVerticalStrut(6));
+
+        JPanel quickAmts = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 6, 0));
+        quickAmts.setOpaque(false);
+        for (int qVal : new int[]{50, 100, 200, 500}) {
+            JButton qBtn = new JButton("$" + qVal);
+            qBtn.setFont(new Font("Segoe UI", Font.BOLD, 11));
+            qBtn.setForeground(INK);
+            qBtn.setBackground(new Color(240, 244, 248));
+            qBtn.setFocusPainted(false);
+            qBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+            qBtn.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(new Color(189, 207, 215)),
+                    new EmptyBorder(3, 8, 3, 8)));
+            qBtn.addActionListener(ev -> transferAmountField.setText(String.valueOf(qVal)));
+            quickAmts.add(qBtn);
+        }
+        formCard.add(quickAmts);
+
+        p.add(formCard);
+        p.add(Box.createVerticalStrut(14));
+
+        p.add(action("TRANSFER NOW", TEAL, e -> transfer(transferDestField.getText().trim(), transferAmountField.getText().trim())));
+        p.add(Box.createVerticalStrut(8));
+        p.add(action("BACK", new Color(90, 102, 110), e -> showPage("menu")));
+        p.add(Box.createVerticalGlue());
+        addSecureFooter(p);
         return p;
     }
 
@@ -410,11 +499,11 @@ public class ATMGui {
             bank.processTransaction(t);
             if (type.equals("withdraw")) {
                 atm.dispenseCash(amount);
-                showProcessing("COUNTING NOTES", "Please wait while your cash is prepared…", () -> { SoundEffects.cashDispenser(); cashPort.dispense(amount, () -> {
+                showProcessing("COUNTING NOTES", "Please wait while your cash is prepared...", () -> { SoundEffects.cashDispenser(); cashPort.dispense(amount, () -> {
                     collectionHeading.setText("PLEASE COLLECT YOUR CASH"); showPage("collection");
                 }); });
             } else {
-                showProcessing("OPENING DEPOSIT SLOT", "Place your cash in the illuminated deposit slot…", () ->
+                showProcessing("OPENING DEPOSIT SLOT", "Place your cash in the illuminated deposit slot...", () ->
                         cashPort.acceptDeposit(amount, () -> showProcessing("COUNTING AND VALIDATING NOTES",
                                 "Deposit accepted: " + money.format(amount) + "\nUpdated balance: " + money.format(activeAccount.checkBalance()), this::offerReceipt)));
             }
@@ -424,13 +513,73 @@ public class ATMGui {
 
     private void transfer(String destinationNumber, String rawAmount) {
         try {
+            if (destinationNumber.isEmpty() || rawAmount.isEmpty()) {
+                dialog("Please enter both recipient account number and amount.");
+                return;
+            }
+            if (activeAccount != null && destinationNumber.equalsIgnoreCase(activeAccount.getAccountNumber())) {
+                dialog("Cannot transfer funds to the same account.");
+                return;
+            }
             Account destination = null;
-            for (Customer c : customers) for (Account a : c.getAccounts()) if (a.getAccountNumber().equals(destinationNumber)) destination = a;
-            if (destination == null) { dialog("Destination account not found."); return; }
-            double amount = Double.parseDouble(rawAmount); Transaction t = new Transfer(id(), amount, activeAccount, destination);
-            if (amount <= 0 || !t.execute()) { dialog("Transfer failed. Check amount and balance."); return; }
-            bank.processTransaction(t); confirmation("TRANSFER SUCCESSFUL", amount);
-        } catch (NumberFormatException e) { dialog("Enter a valid numeric amount."); }
+            for (Customer c : customers) {
+                for (Account a : c.getAccounts()) {
+                    if (a.getAccountNumber().equalsIgnoreCase(destinationNumber)) {
+                        destination = a;
+                    }
+                }
+            }
+            if (destination == null) {
+                dialog("Destination account not found. Please check account number.");
+                return;
+            }
+            double amount = Double.parseDouble(rawAmount);
+            Transaction t = new Transfer(id(), amount, activeAccount, destination);
+            if (amount <= 0 || !t.execute()) {
+                dialog("Transfer failed. Please check amount and available balance.");
+                return;
+            }
+            bank.processTransaction(t);
+            confirmation("TRANSFER SUCCESSFUL", amount);
+        } catch (NumberFormatException e) {
+            dialog("Please enter a valid numeric amount.");
+        }
+    }
+
+    private void showTransferPage() {
+        if (activeAccount != null) {
+            transferAccountInfoLabel.setText("From: " + activeAccount.getAccountNumber() + "  |  Available Balance: " + money.format(activeAccount.checkBalance()));
+        }
+        transferDestField.setText("");
+        transferAmountField.setText("");
+
+        transferSuggestionsPanel.removeAll();
+        JLabel hintLabel = new JLabel("Demo Accounts: ");
+        hintLabel.setFont(new Font("Segoe UI", Font.BOLD, 11));
+        hintLabel.setForeground(new Color(88, 112, 125));
+        transferSuggestionsPanel.add(hintLabel);
+
+        for (Customer c : customers) {
+            for (Account a : c.getAccounts()) {
+                if (activeAccount != null && a.getAccountNumber().equalsIgnoreCase(activeAccount.getAccountNumber())) {
+                    continue;
+                }
+                JButton accBtn = new JButton(a.getAccountNumber() + " (" + c.getName().split(" ")[0] + ")");
+                accBtn.setFont(new Font("Segoe UI", Font.BOLD, 11));
+                accBtn.setForeground(BLUE);
+                accBtn.setBackground(new Color(232, 243, 246));
+                accBtn.setFocusPainted(false);
+                accBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                accBtn.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(160, 195, 220)),
+                        new EmptyBorder(3, 7, 3, 7)));
+                accBtn.addActionListener(ev -> transferDestField.setText(a.getAccountNumber()));
+                transferSuggestionsPanel.add(accBtn);
+            }
+        }
+        transferSuggestionsPanel.revalidate();
+        transferSuggestionsPanel.repaint();
+        showPage("transfer");
     }
 
     private void showBalance() { balanceValue.setText(money.format(activeAccount.checkBalance())); showPage("balance"); }
@@ -493,12 +642,12 @@ public class ATMGui {
     private void confirmation(String heading, double amount) { dialog(heading + "\n\nAmount: " + money.format(amount) + "\nAvailable balance: " + money.format(activeAccount.checkBalance()) + "\n\nThank you for banking with us."); showPage("menu"); }
     private void offerReceipt() { showPage("receiptChoice"); }
     private void printReceipt() {
-        showProcessing("PRINTING RECEIPT", "Your transaction details are being printed…", () -> { SoundEffects.receiptPrinter(); receiptPort.dispense(() -> {
+        showProcessing("PRINTING RECEIPT", "Your transaction details are being printed...", () -> { SoundEffects.receiptPrinter(); receiptPort.dispense(() -> {
             receiptHeading.setText("PLEASE TAKE YOUR RECEIPT"); showPage("receiptCollection");
         }); });
     }
     private void startEjection() {
-        showProcessing("ENDING SESSION", "Your card is being returned…", () -> { SoundEffects.cardEject(); cardPort.eject(() -> showPage("cardCollection")); });
+        showProcessing("ENDING SESSION", "Your card is being returned...", () -> { SoundEffects.cardEject(); cardPort.eject(() -> showPage("cardCollection")); });
     }
     private void finishSession() {
         cardPort.removeItem(); activeCustomer = null; pendingCustomer = null; activeAccount = null; customerLabel.setText("READY"); cardPort.setStatus("READY"); showPage("welcome");
@@ -513,7 +662,7 @@ public class ATMGui {
         cardPort.setCardDetails(customer.getName(), customer.getCard().getCardNumber());
         detectedCardLabel.setText("Card detected:  " + maskedCard(customer.getCard().getCardNumber()));
         Timer detect = new Timer(400, e -> cardPort.insert(() ->
-                showProcessing("READING CARD", "Please wait while your card is verified…", () -> showPage("login"))));
+                showProcessing("READING CARD", "Please wait while your card is verified...", () -> showPage("login"))));
         detect.setRepeats(false); detect.start();
     }
     private void showPage(String name) { pages.show(screen, name); }
