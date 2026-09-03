@@ -1277,6 +1277,7 @@ public class ATMGui {
     private JLabel label(String text, int size, Color color, int alignment) { JLabel l = new JLabel("<html>" + text.replace("\n", "<br>") + "</html>", alignment); l.setFont(new Font("Segoe UI", Font.BOLD, size)); l.setForeground(color); l.setAlignmentX(Component.CENTER_ALIGNMENT); return l; }
 
     /** Modern Touchscreen Menu Option Card with vector icon badge and explanatory subtitle. */
+    @SuppressWarnings("serial")
     private static class MenuOptionCard extends JButton {
         private final String title;
         private final String subtitle;
@@ -1422,6 +1423,7 @@ public class ATMGui {
     }
 
     /** Tactile Hardware FDK Key with Pure Vector Arrow Polygon. */
+    @SuppressWarnings("serial")
     private static class FdkHardwareButton extends JButton {
         private final boolean pointRight;
 
@@ -1473,6 +1475,7 @@ public class ATMGui {
     }
 
     /** Custom interactive PIN indicator dots widget (4 circles). */
+    @SuppressWarnings("serial")
     private static class PinDotsPanel extends JPanel {
         private int filledCount = 0;
 
@@ -1538,22 +1541,19 @@ public class ATMGui {
     }
 
     /** Realistic interactive visual debit card component. */
+    @SuppressWarnings("serial")
     private static class VisualDebitCard extends JPanel {
         private final Customer customer;
         private final String theme; // "BLUE" or "GOLD"
-        private final String pinHint;
         private final String expiry;
         private final String cardType;
-        private final Runnable onClick;
         private boolean isHovered = false;
 
         VisualDebitCard(Customer customer, String theme, String pinHint, String expiry, String cardType, Runnable onClick) {
             this.customer = customer;
             this.theme = theme;
-            this.pinHint = pinHint;
             this.expiry = expiry;
             this.cardType = cardType;
-            this.onClick = onClick;
 
             setPreferredSize(new Dimension(270, 168));
             setMaximumSize(new Dimension(270, 168));
@@ -1667,6 +1667,7 @@ public class ATMGui {
     }
 
     /** Authentic custom painted card brand badge component. */
+    @SuppressWarnings("serial")
     private static class CardBrandBadge extends JPanel {
         private final String brand;
 
@@ -1775,6 +1776,7 @@ public class ATMGui {
     }
 
     /** Small painted hardware port used to make card, cash, and receipt actions visible. */
+    @SuppressWarnings("serial")
     private static class PortAnimation extends JPanel {
         private final String title;
         private final Color accent;
